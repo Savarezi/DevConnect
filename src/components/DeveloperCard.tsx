@@ -12,9 +12,10 @@ import Avatar from './Avatar';
 interface DeveloperCardProps {
   developer: Developer;
   onEdit?: (developer: Developer) => void;
+  onTagClick?: (tag: string) => void;
 }
 
-const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit }) => {
+const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagClick }) => {
   const getSeniorityColors = (level: string) => {
     switch (level) {
       case 'Estagiário': return 'bg-gray-400/10 text-gray-300 border-gray-400/30 shadow-[0_0_10px_rgba(156,163,175,0.2)]';
@@ -69,10 +70,13 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit }) => {
           </div>
           
           <div className="flex flex-col items-center gap-2">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-[10px] font-black text-brand-primary uppercase tracking-[0.2em] shadow-[0_0_10px_rgba(139,92,246,0.2)]">
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse" />
+            <button 
+              onClick={() => onTagClick?.(developer.currentArea)}
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-[10px] font-black text-brand-primary uppercase tracking-[0.2em] shadow-[0_0_10px_rgba(139,92,246,0.2)] hover:bg-brand-primary/20 hover:border-brand-primary/40 transition-all cursor-pointer group/tag"
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse group-hover/tag:scale-125 transition-transform" />
               {developer.currentArea}
-            </div>
+            </button>
           </div>
         </div>
 
@@ -85,9 +89,13 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit }) => {
           </div>
           <div className="flex flex-wrap gap-2">
             {developer.interestArea.split(',').map((tag, idx) => (
-              <span key={idx} className="px-3 py-2 rounded-xl bg-white/[0.04] text-[10px] font-black text-white/80 border border-white/10 hover:border-brand-primary/50 hover:bg-brand-primary/10 hover:text-white transition-all cursor-default uppercase tracking-wider">
+              <button 
+                key={idx} 
+                onClick={() => onTagClick?.(tag.trim())}
+                className="px-3 py-2 rounded-xl bg-white/[0.04] text-[10px] font-black text-white/80 border border-white/10 hover:border-brand-primary/50 hover:bg-brand-primary/10 hover:text-white transition-all cursor-pointer uppercase tracking-wider active:scale-95"
+              >
                 {tag.trim()}
-              </span>
+              </button>
             ))}
           </div>
         </div>

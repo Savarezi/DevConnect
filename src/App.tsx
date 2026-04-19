@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform, animate } from 'motion/react';
 import { 
   Terminal, 
   Code2, 
@@ -25,6 +25,23 @@ import SearchFilters from './components/SearchFilters';
 import AuthScreen from './components/AuthScreen';
 import { Session } from '@supabase/supabase-js';
 
+function AnimatedCounter({ value }: { value: number }) {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    const controls = animate(count, value, { duration: 2, ease: "easeOut" });
+    return () => controls.stop();
+  }, [value]);
+
+  useEffect(() => {
+    return rounded.on("change", (latest) => setDisplayValue(latest));
+  }, [rounded]);
+
+  return <span>{displayValue}</span>;
+}
+
 export default function App() {
   const [session, setSession] = useState<Session | null>(null);
   const [developers, setDevelopers] = useState<Developer[]>([]);
@@ -35,6 +52,20 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [areaFilter, setAreaFilter] = useState('Todas');
   const [currentOwnerId, setCurrentOwnerId] = useState<string>('');
+  
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 100, damping: 30 });
+  const springY = useSpring(mouseY, { stiffness: 100, damping: 30 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
     // Initial session check
@@ -119,7 +150,18 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-gray-100 font-sans selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen bg-[#020203] text-white selection:bg-brand-primary/30 relative">
+      {/* Mouse Spotlight Background */}
+      <motion.div 
+        style={{
+          x: springX,
+          y: springY,
+          translateX: '-50%',
+          translateY: '-50%',
+        }}
+        className="fixed top-0 left-0 w-[600px] h-[600px] bg-brand-primary/10 blur-[120px] rounded-full pointer-events-none z-0"
+      />
+      
       {/* Header / Hero Section */}
       <header className="relative py-20 overflow-hidden">
         {/* Background Gradients */}
@@ -189,7 +231,7 @@ export default function App() {
                 <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-1">Membros Ativos no Hub</span>
                 <div className="flex items-baseline gap-3">
                   <span className="text-4xl font-mono font-black text-white">
-                    {developers.length}
+                    <AnimatedCounter value={developers.length} />
                   </span>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" />
@@ -264,6 +306,7 @@ export default function App() {
                     key={dev.id} 
                     developer={dev} 
                     onEdit={dev.ownerId === currentOwnerId ? handleOpenEdit : undefined}
+                    onTagClick={setAreaFilter}
                   />
                 ))}
               </AnimatePresence>
