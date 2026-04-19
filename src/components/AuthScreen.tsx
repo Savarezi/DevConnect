@@ -101,7 +101,7 @@ export default function AuthScreen() {
             </motion.div>
             <h1 className="text-4xl font-black text-white uppercase tracking-tighter mb-4">
               Bem-vindo ao <br/>
-              <span className="text-brand-primary italic">Directório.</span>
+              <span className="text-brand-primary italic">DevConnect.</span>
             </h1>
             <p className="text-gray-500 font-medium leading-relaxed">
               Acesse o hub exclusivo para desenvolvedores de elite. Construa sua rede, troque experiências e escale sua carreira através de conexões reais no ecossistema tech.
