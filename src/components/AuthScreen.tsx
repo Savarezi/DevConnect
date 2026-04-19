@@ -42,8 +42,8 @@ export default function AuthScreen() {
         {/* Left Side: Visual Experience */}
         <div className="hidden lg:block relative group">
           <img 
-            src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200" 
-            alt="Futuristic Technology"
+            src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=1200" 
+            alt="Futuristic Data Network"
             referrerPolicy="no-referrer"
             className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
           />
@@ -57,7 +57,7 @@ export default function AuthScreen() {
               className="flex items-center gap-3 px-4 py-2 rounded-xl bg-brand-primary/10 border border-brand-primary/20 backdrop-blur-md w-fit"
             >
               <Cpu className="w-4 h-4 text-brand-primary" />
-              <span className="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em]">Syste-Level Access</span>
+              <span className="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em]">Protocolo de Rede Ativo</span>
             </motion.div>
             
             <motion.h2 
@@ -66,8 +66,8 @@ export default function AuthScreen() {
               transition={{ delay: 0.4 }}
               className="text-4xl font-black text-white uppercase tracking-tighter leading-tight"
             >
-              Networking de <br/>
-              <span className="text-brand-primary italic">Escala Global.</span>
+              Conecte-se à <br/>
+              <span className="text-brand-primary italic">Inteligência Tech.</span>
             </motion.h2>
             
             <div className="grid grid-cols-2 gap-6 pt-4">
