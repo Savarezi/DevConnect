@@ -219,7 +219,7 @@ export default function App() {
                     {developers.map((dev) => (
                       <div key={`${repeatIdx}-${dev.id}`} className="flex items-center gap-4">
                         <span className="text-xs font-mono font-black text-white/50 uppercase tracking-[0.2em]">
-                          {dev.name.split(' ')[0]} <span className="text-brand-primary font-light">[{dev.area || 'DEV'}]</span>
+                          {dev.name.split(' ')[0]} <span className="text-brand-primary font-light">[{dev.currentArea || 'DEV'}]</span>
                         </span>
                         <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
                       </div>
