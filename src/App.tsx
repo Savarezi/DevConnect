@@ -177,10 +177,11 @@ export default function App() {
           </div>
 
           {/* Stats Bar */}
-          <div className="flex items-center justify-center p-8 border border-white/10 bg-surface-card/40 backdrop-blur-2xl rounded-3xl relative overflow-hidden">
+          <div className="flex flex-col md:flex-row items-center p-8 border border-white/10 bg-surface-card/40 backdrop-blur-2xl rounded-3xl relative overflow-hidden gap-8">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-brand-primary/5 to-transparent pointer-events-none" />
             
-            <div className="flex items-center gap-6 relative z-10">
+            {/* User Count */}
+            <div className="flex items-center gap-6 relative z-10 shrink-0">
               <div className="w-14 h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary shadow-[0_0_20px_rgba(139,92,246,0.3)]">
                 <Users className="w-7 h-7" />
               </div>
@@ -196,6 +197,36 @@ export default function App() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* Developers Ticker */}
+            <div className="flex-1 w-full overflow-hidden relative z-10 hidden md:block">
+              <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-[#020203] to-transparent z-20" />
+              <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-[#020203] to-transparent z-20" />
+              
+              <motion.div 
+                animate={{ x: [0, -2000] }}
+                transition={{ 
+                  duration: 40, 
+                  repeat: Infinity, 
+                  ease: "linear"
+                }}
+                className="flex items-center whitespace-nowrap gap-12"
+              >
+                {/* We repeat the list multiple times to ensure a seamless infinite loop */}
+                {Array.from({ length: 10 }).map((_, repeatIdx) => (
+                  <React.Fragment key={repeatIdx}>
+                    {developers.map((dev) => (
+                      <div key={`${repeatIdx}-${dev.id}`} className="flex items-center gap-4">
+                        <span className="text-xs font-mono font-black text-white/50 uppercase tracking-[0.2em]">
+                          {dev.name.split(' ')[0]} <span className="text-brand-primary font-light">[{dev.area || 'DEV'}]</span>
+                        </span>
+                        <div className="w-1.5 h-1.5 rounded-full bg-white/10" />
+                      </div>
+                    ))}
+                  </React.Fragment>
+                ))}
+              </motion.div>
             </div>
           </div>
         </div>
