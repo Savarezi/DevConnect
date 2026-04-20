@@ -20,7 +20,10 @@ export const developerService = {
 
     const { data, error } = await supabase
       .from('profiles')
-      .select('*')
+      .select(`
+        *,
+        contributions:forum_posts(count)
+      `)
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -39,6 +42,7 @@ export const developerService = {
       linkedinUrl: item.linkedin_url || '',
       githubUrl: item.github_url || '',
       createdAt: item.created_at,
+      contributions: item.contributions?.[0]?.count || 0,
     }));
   },
 

@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { Linkedin, Github, ExternalLink, MapPin, Briefcase, Edit2 } from 'lucide-react';
+import { Linkedin, Github, ExternalLink, MapPin, Briefcase, Edit2, MessageSquare, Zap, Target } from 'lucide-react';
 import { Developer } from '../types';
 import Avatar from './Avatar';
 
@@ -27,6 +27,17 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
       default: return 'bg-white/5 text-gray-400 border-white/10';
     }
   };
+
+  const contributionCount = developer.contributions || 0;
+  
+  const getContributionLevel = () => {
+    if (contributionCount >= 10) return { label: 'Ouro', color: 'text-amber-400', icon: Zap, bg: 'bg-amber-400/10', border: 'border-amber-400/30' };
+    if (contributionCount >= 5) return { label: 'Prata', color: 'text-gray-300', icon: Target, bg: 'bg-gray-500/10', border: 'border-gray-300/30' };
+    if (contributionCount >= 1) return { label: 'Bronze', color: 'text-orange-400', icon: MessageSquare, bg: 'bg-orange-400/10', border: 'border-orange-400/30' };
+    return null;
+  };
+
+  const level = getContributionLevel();
 
   return (
     <motion.div
@@ -64,8 +75,17 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
             <h3 className="text-2xl font-[900] text-white tracking-tight leading-tight uppercase">
               {developer.name}
             </h3>
-            <div className={`inline-flex px-3 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest ${getSeniorityColors(developer.seniority)}`}>
-              {developer.seniority}
+            <div className="flex items-center justify-center gap-2">
+              <div className={`inline-flex px-3 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest ${getSeniorityColors(developer.seniority)}`}>
+                {developer.seniority}
+              </div>
+              
+              {level && (
+                <div className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest ${level.bg} ${level.color} ${level.border} animate-pulse`}>
+                  <level.icon className="w-2.5 h-2.5" />
+                  Contribuidor {level.label} ({contributionCount})
+                </div>
+              )}
             </div>
           </div>
           

@@ -16,6 +16,7 @@ export interface Developer {
   linkedinUrl: string;
   githubUrl: string;
   createdAt: string;
+  contributions?: number;
 }
 
 export type DeveloperFormData = Omit<Developer, 'id' | 'createdAt' | 'ownerId'>;

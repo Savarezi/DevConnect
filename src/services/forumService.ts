@@ -68,11 +68,29 @@ export const forumService = {
         category: data.category,
         author_id: user.id
       }])
-      .select()
+      .select(`
+        *,
+        author:profiles(
+          name,
+          avatar_url
+        )
+      `)
       .single();
 
     if (error) throw error;
-    return inserted;
+    
+    return {
+      id: inserted.id,
+      title: inserted.title,
+      content: inserted.content,
+      category: inserted.category,
+      authorId: inserted.author_id,
+      createdAt: inserted.created_at,
+      author: {
+        name: inserted.author?.name || 'Dev Anônimo',
+        avatarUrl: inserted.author?.avatar_url
+      }
+    };
   },
 
   getComments: async (postId: string): Promise<ForumComment[]> => {
@@ -117,11 +135,28 @@ export const forumService = {
         author_id: user.id,
         content
       }])
-      .select()
+      .select(`
+        *,
+        author:profiles(
+          name,
+          avatar_url
+        )
+      `)
       .single();
 
     if (error) throw error;
-    return inserted;
+    
+    return {
+      id: inserted.id,
+      postId: inserted.post_id,
+      authorId: inserted.author_id,
+      content: inserted.content,
+      createdAt: inserted.created_at,
+      author: {
+        name: inserted.author?.name || 'Dev Anônimo',
+        avatarUrl: inserted.author?.avatar_url
+      }
+    };
   },
 
   toggleLike: async (postId: string): Promise<boolean> => {
