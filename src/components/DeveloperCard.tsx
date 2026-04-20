@@ -66,9 +66,9 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
       animate={{ opacity: 1, scale: 1 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
-      className="bg-[#0a0a0c]/80 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl hover:shadow-brand-primary/20 hover:border-brand-primary/40 transition-all group relative overflow-hidden flex flex-col items-center text-center"
+      whileHover={{ y: -4, zIndex: 50 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="bg-[#0a0a0c]/80 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl hover:shadow-brand-primary/20 hover:border-brand-primary/40 transition-all group relative overflow-hidden flex flex-col items-center text-center z-10"
     >
       {/* Stardust Background Effect */}
       <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.05)_0%,transparent_100%),url('https://www.transparenttextures.com/patterns/stardust.png')]" />
