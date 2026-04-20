@@ -35,6 +35,15 @@
     text-shadow: 0 0 15px rgba(139, 92, 246, 0.6);
   }
 
+  @keyframes gloss {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(500%); }
+  }
+
+  .animate-gloss {
+    animation: gloss 3s linear infinite;
+  }
+
   .scroller::-webkit-scrollbar {
     width: 6px;
     height: 6px;

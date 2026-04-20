@@ -412,86 +412,137 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              className="w-full max-w-2xl bg-[#0a0a0c] border border-white/10 rounded-[3.5rem] p-12 relative shadow-[0_0_100px_rgba(245,158,11,0.2)] overflow-hidden"
+              className="w-full max-w-2xl bg-[#030303]/90 border border-white/10 rounded-[3rem] p-12 relative shadow-[0_0_100px_rgba(245,158,11,0.15)] overflow-hidden backdrop-blur-3xl"
             >
-              <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 blur-[120px] pointer-events-none" />
+              {/* Scanline Effect */}
+              <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none opacity-20" />
               
-              <div className="flex items-center justify-between mb-12">
-                <div className="flex items-center gap-5">
-                  <div className="w-16 h-16 rounded-3xl bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-[0_0_30px_rgba(245,158,11,0.4)] relative">
-                    <Trophy className="w-10 h-10" />
-                    <div className="absolute inset-0 bg-amber-500/20 blur-xl animate-pulse rounded-3xl" />
+              <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 blur-[130px] pointer-events-none -z-10" />
+              
+              <div className="flex items-center justify-between mb-16 relative z-10">
+                <div className="flex items-center gap-6">
+                  <div className="relative group">
+                    <div className="w-20 h-20 rounded-3xl bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/30 group-hover:border-amber-500/60 transition-all">
+                      <Trophy className="w-12 h-12" />
+                    </div>
+                    <div className="absolute inset-0 bg-amber-500/20 blur-2xl animate-pulse rounded-3xl -z-10" />
+                    
+                    {/* Technical Decors */}
+                    <div className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-amber-500/50" />
+                    <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-amber-500/50" />
                   </div>
                   <div>
-                    <h3 className="text-3xl font-black uppercase tracking-tighter italic">Ranking Elite</h3>
-                    <p className="text-[11px] font-mono text-amber-500/60 font-bold uppercase tracking-[0.3em] mt-1">top_contributors_global</p>
+                    <h3 className="text-4xl font-[950] uppercase tracking-tighter italic text-white flex items-center gap-4">
+                      Ranking Elite
+                      <div className="px-2 py-0.5 rounded bg-amber-500 text-[10px] font-black text-amber-950 not-italic tracking-widest uppercase">Global</div>
+                    </h3>
+                    <div className="flex items-center gap-3 mt-1">
+                      <span className="text-[10px] font-mono text-amber-500/60 font-bold uppercase tracking-[0.4em]">Protocolo: Contribuição_Nivel_Máximo</span>
+                      <div className="h-px w-20 bg-gradient-to-r from-amber-500/40 to-transparent" />
+                    </div>
                   </div>
                 </div>
                 <button 
                   onClick={() => setIsRankingOpen(false)}
-                  className="p-4 rounded-2xl bg-white/5 hover:bg-white/10 text-gray-500 hover:text-white transition-all group"
+                  className="p-4 rounded-full bg-white/5 hover:bg-white/10 text-gray-500 hover:text-white transition-all border border-white/5"
                 >
-                  <Plus className="w-8 h-8 rotate-45 group-hover:scale-125 transition-transform" />
+                  <Plus className="w-8 h-8 rotate-45" />
                 </button>
               </div>
 
-              <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar px-2">
+              <div className="space-y-4 max-h-[55vh] overflow-y-auto pr-4 custom-scrollbar relative z-10">
                 {eliteDevelopers.map((dev, idx) => (
                   <motion.div 
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
                     key={dev.id} 
-                    className="flex items-center gap-8 p-6 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-amber-500/40 transition-all group cursor-pointer relative overflow-hidden"
+                    className="flex items-center gap-8 p-1 bg-white/[0.02] border border-white/5 rounded-[2.5rem] hover:border-amber-500/30 transition-all group cursor-pointer relative"
                     onClick={() => {
                       setSearchTerm(dev.name);
                       setIsRankingOpen(false);
                       window.scrollTo({ top: 800, behavior: 'smooth' });
                     }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                    
-                    <div className="relative shrink-0">
-                      <div className="w-20 h-20 rounded-3xl bg-white/5 overflow-hidden border border-white/10 group-hover:border-amber-500/50 transition-all shadow-2xl">
-                        {dev.avatarUrl ? (
-                          <img src={dev.avatarUrl} alt="" className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-700 bg-gray-900">
-                             <Users className="w-10 h-10" />
+                    <div className="flex items-center w-full gap-6 p-6">
+                      {/* Position Number - Large Typography */}
+                      <div className="w-16 flex flex-col items-center shrink-0">
+                        <span className={`text-4xl font-mono font-[900] ${
+                          idx === 0 ? 'text-amber-500' : 
+                          idx === 1 ? 'text-slate-400' : 
+                          idx === 2 ? 'text-orange-600' :
+                          'text-white/20'
+                        }`}>
+                          {(idx + 1).toString().padStart(2, '0')}
+                        </span>
+                        <div className={`w-6 h-1 mt-1 rounded-full ${
+                          idx === 0 ? 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 
+                          idx === 1 ? 'bg-slate-400' : 
+                          idx === 2 ? 'bg-orange-600' :
+                          'bg-white/5'
+                        }`} />
+                      </div>
+
+                      <div className="relative shrink-0">
+                        <div className={`w-20 h-20 rounded-[2rem] p-1 ${
+                          idx === 0 ? 'bg-gradient-to-br from-amber-500/50 to-transparent' : 
+                          'bg-white/5'
+                        }`}>
+                          <div className="w-full h-full rounded-[1.8rem] overflow-hidden border border-white/10 relative transition-transform group-hover:scale-105">
+                            {dev.avatarUrl ? (
+                              <img src={dev.avatarUrl} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-gray-700 bg-gray-900">
+                                 <Users className="w-10 h-10" />
+                              </div>
+                            )}
+                            {/* Holographic overlay on first place */}
+                            {idx === 0 && (
+                              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 via-transparent to-white/10 mix-blend-overlay" />
+                            )}
                           </div>
-                        )}
-                      </div>
-                      <div className={`absolute -top-3 -right-3 w-10 h-10 rounded-full border-4 border-[#0a0a0c] flex items-center justify-center text-[14px] font-[950] shadow-2xl z-10 ${
-                        idx === 0 ? 'bg-amber-500 text-amber-950 scale-125' : 
-                        idx === 1 ? 'bg-slate-400 text-slate-950' : 
-                        idx === 2 ? 'bg-orange-600 text-orange-950' :
-                        'bg-white/10 text-white'
-                      }`}>
-                        {idx + 1}
-                      </div>
-                    </div>
-                    
-                    <div className="flex-1 relative z-10">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xl font-black uppercase text-white group-hover:text-amber-500 transition-colors tracking-tight italic">{dev.name}</p>
-                        <div className="flex items-center gap-3">
-                          <Zap className="w-5 h-5 text-amber-500 animate-pulse" />
-                          <span className="text-lg font-mono font-black text-white tracking-widest leading-none">
-                            <AnimatedCounter value={dev.contributions || 0} /> <span className="text-xs text-gray-500">XP</span>
-                          </span>
                         </div>
                       </div>
-                      <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[1px]">
-                        <motion.div 
-                          initial={{ width: 0 }}
-                          animate={{ width: `${Math.min((dev.contributions || 0) * 10, 100)}%` }}
-                          className={`h-full rounded-full bg-gradient-to-r ${
-                            idx === 0 ? 'from-amber-600 to-amber-300' :
-                            idx === 1 ? 'from-slate-500 to-slate-300' :
-                            idx === 2 ? 'from-orange-700 to-orange-400' :
-                            'from-gray-600 to-gray-400'
-                          }`}
-                        />
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between mb-4">
+                          <div>
+                            <p className="text-2xl font-black uppercase text-white group-hover:text-amber-500 transition-colors tracking-tighter italic truncate">
+                              {dev.name}
+                            </p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                              <span className="text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest">Sincronizado_No_Hub</span>
+                            </div>
+                          </div>
+                          
+                          <div className="text-right">
+                            <div className="flex items-center justify-end gap-3 mb-1">
+                              <Zap className={`w-5 h-5 ${idx === 0 ? 'text-amber-500' : 'text-gray-500'}`} />
+                              <span className="text-2xl font-mono font-black text-white tracking-widest leading-none">
+                                <AnimatedCounter value={dev.contributions || 0} />
+                              </span>
+                            </div>
+                            <span className="text-[10px] font-mono font-bold text-amber-500 uppercase tracking-widest">Experiência_Hub</span>
+                          </div>
+                        </div>
+                        
+                        {/* More modern progress bar */}
+                        <div className="relative h-3 w-full bg-white/5 rounded-full overflow-hidden p-[2px] border border-white/5">
+                          <motion.div 
+                            initial={{ width: 0 }}
+                            animate={{ width: `${Math.min((dev.contributions || 0) * 10, 100)}%` }}
+                            transition={{ duration: 1.5, ease: "easeOut" }}
+                            className={`h-full rounded-full relative ${
+                              idx === 0 ? 'bg-gradient-to-r from-amber-600 via-amber-400 to-amber-200' :
+                              idx === 1 ? 'from-slate-600 via-slate-400 to-slate-200' :
+                              idx === 2 ? 'from-orange-700 via-orange-500 to-orange-300' :
+                              'from-gray-700 via-gray-500 to-gray-300'
+                            }`}
+                          >
+                            <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.4)_50%,transparent_100%)] w-20 animate-gloss" />
+                          </motion.div>
+                        </div>
                       </div>
                     </div>
                   </motion.div>
