@@ -19,3 +19,37 @@ export interface Developer {
 }
 
 export type DeveloperFormData = Omit<Developer, 'id' | 'createdAt' | 'ownerId'>;
+
+export interface ForumPost {
+  id: string;
+  title: string;
+  content: string;
+  category: string;
+  authorId: string;
+  createdAt: string;
+  author?: {
+    name: string;
+    avatarUrl?: string;
+  };
+  likesCount?: number;
+  commentsCount?: number;
+  hasLiked?: boolean;
+}
+
+export interface ForumComment {
+  id: string;
+  postId: string;
+  authorId: string;
+  content: string;
+  createdAt: string;
+  author?: {
+    name: string;
+    avatarUrl?: string;
+  };
+}
+
+export interface PostFormData {
+  title: string;
+  content: string;
+  category: string;
+}

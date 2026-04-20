@@ -23,6 +23,7 @@ import DeveloperCard from './components/DeveloperCard';
 import DeveloperForm from './components/DeveloperForm';
 import SearchFilters from './components/SearchFilters';
 import AuthScreen from './components/AuthScreen';
+import ForumScreen from './components/ForumScreen';
 import { Session } from '@supabase/supabase-js';
 
 function AnimatedCounter({ value }: { value: number }) {
@@ -52,6 +53,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [areaFilter, setAreaFilter] = useState('Todas');
   const [currentOwnerId, setCurrentOwnerId] = useState<string>('');
+  const [activeTab, setActiveTab] = useState<'directory' | 'forum'>('directory');
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -149,6 +151,10 @@ export default function App() {
     return <AuthScreen />;
   }
 
+  if (activeTab === 'forum') {
+    return <ForumScreen onBack={() => setActiveTab('directory')} />;
+  }
+
   return (
     <div className="min-h-screen bg-[#020203] text-white selection:bg-brand-primary/30 relative">
       {/* Mouse Spotlight Background */}
@@ -169,7 +175,29 @@ export default function App() {
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] -z-10" />
         
         <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-end mb-8">
+          <div className="flex justify-between items-center mb-8">
+            <nav className="flex items-center gap-2 p-1.5 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-xl">
+              <button 
+                onClick={() => setActiveTab('directory')}
+                className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                  activeTab === 'directory' 
+                    ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20' 
+                    : 'text-gray-500 hover:text-white'
+                }`}
+              >
+                Hub de Devs
+              </button>
+              <button 
+                onClick={() => setActiveTab('forum')}
+                className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                  activeTab === 'forum' 
+                    ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20' 
+                    : 'text-gray-500 hover:text-white'
+                }`}
+              >
+                Comunidade
+              </button>
+            </nav>
             <button
               onClick={handleLogout}
               className="px-4 py-2 rounded-xl bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/50 text-gray-400 hover:text-red-500 text-[10px] font-black uppercase tracking-widest transition-all"
