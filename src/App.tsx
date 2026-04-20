@@ -55,12 +55,12 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isRankingOpen, setIsRankingOpen] = useState(false);
   const [editingDeveloper, setEditingDeveloper] = useState<Developer | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [areaFilter, setAreaFilter] = useState('Todas');
   const [currentOwnerId, setCurrentOwnerId] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'directory' | 'forum'>('directory');
-  const [aiTip, setAiTip] = useState<string>('');
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -113,9 +113,6 @@ export default function App() {
 
   useEffect(() => {
     fetchDevelopers();
-    
-    // Generate AI Tip
-    geminiService.generateTechTip().then(setAiTip);
   }, [session]);
 
   const handleLogout = async () => {
@@ -231,6 +228,17 @@ export default function App() {
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
                 </div>
               </button>
+
+              <div className="h-6 w-px bg-white/10 mx-2" />
+
+              <button 
+                onClick={() => setIsRankingOpen(true)}
+                className="flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all bg-amber-500/10 text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 relative group"
+              >
+                <Trophy className="w-4 h-4" />
+                Ranking
+                <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-amber-500 rounded-full border-2 border-[#020203] animate-pulse" />
+              </button>
             </nav>
             <button
               onClick={handleLogout}
@@ -339,40 +347,6 @@ export default function App() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 pb-40">
         <div className="space-y-8 mb-12">
-          {/* AI Insight Box - Full Width for better visibility */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-surface-card/40 border border-brand-primary/20 rounded-[2rem] p-8 backdrop-blur-xl relative overflow-hidden group shadow-[0_0_30px_rgba(139,92,246,0.1)]"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/10 blur-[100px] -z-10 group-hover:bg-brand-primary/20 transition-all" />
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              <div className="w-20 h-20 rounded-3xl bg-brand-primary/20 flex items-center justify-center text-brand-primary shrink-0 relative">
-                <Sparkles className="w-10 h-10" />
-                <div className="absolute inset-0 bg-brand-primary/40 blur-2xl animate-pulse" />
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="text-xs font-black text-brand-primary uppercase tracking-[0.4em] mb-2 flex items-center justify-center md:justify-start gap-3">
-                  Inteligência NexuS <div className="w-2 h-2 rounded-full bg-brand-primary animate-ping" />
-                </h3>
-                <p className="text-xl md:text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">
-                  "{aiTip || 'Conectando à rede neural para gerar seu insight diário...'}"
-                </p>
-              </div>
-              <button 
-                onClick={async () => {
-                  setAiTip('Sincronizando...');
-                  const tip = await geminiService.generateTechTip();
-                  setAiTip(tip);
-                }}
-                className="p-5 rounded-2xl bg-white/5 hover:bg-brand-primary/10 text-gray-500 hover:text-brand-primary border border-white/10 hover:border-brand-primary/50 transition-all group/btn shadow-xl backdrop-blur-md"
-                title="Atualizar Insight"
-              >
-                <RefreshCcw className="w-6 h-6 group-hover/btn:rotate-180 transition-transform duration-1000" />
-              </button>
-            </div>
-          </motion.div>
-
           <div className="space-y-12">
             <SearchFilters 
               searchTerm={searchTerm}
@@ -422,6 +396,118 @@ export default function App() {
           </div>
         </div>
       </main>
+
+      <AnimatePresence>
+        {isRankingOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 sm:p-24 overflow-hidden">
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsRankingOpen(false)}
+              className="absolute inset-0 bg-black/90 backdrop-blur-xl"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              className="w-full max-w-2xl bg-[#0a0a0c] border border-white/10 rounded-[3.5rem] p-12 relative shadow-[0_0_100px_rgba(245,158,11,0.2)] overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/10 blur-[120px] pointer-events-none" />
+              
+              <div className="flex items-center justify-between mb-12">
+                <div className="flex items-center gap-5">
+                  <div className="w-16 h-16 rounded-3xl bg-amber-500/10 flex items-center justify-center text-amber-500 shadow-[0_0_30px_rgba(245,158,11,0.4)] relative">
+                    <Trophy className="w-10 h-10" />
+                    <div className="absolute inset-0 bg-amber-500/20 blur-xl animate-pulse rounded-3xl" />
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-black uppercase tracking-tighter italic">Ranking Elite</h3>
+                    <p className="text-[11px] font-mono text-amber-500/60 font-bold uppercase tracking-[0.3em] mt-1">top_contributors_global</p>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => setIsRankingOpen(false)}
+                  className="p-4 rounded-2xl bg-white/5 hover:bg-white/10 text-gray-500 hover:text-white transition-all group"
+                >
+                  <Plus className="w-8 h-8 rotate-45 group-hover:scale-125 transition-transform" />
+                </button>
+              </div>
+
+              <div className="space-y-6 max-h-[60vh] overflow-y-auto pr-4 custom-scrollbar px-2">
+                {eliteDevelopers.map((dev, idx) => (
+                  <motion.div 
+                    initial={{ opacity: 0, x: -30 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.1 }}
+                    key={dev.id} 
+                    className="flex items-center gap-8 p-6 rounded-[2.5rem] bg-white/[0.03] border border-white/5 hover:border-amber-500/40 transition-all group cursor-pointer relative overflow-hidden"
+                    onClick={() => {
+                      setSearchTerm(dev.name);
+                      setIsRankingOpen(false);
+                      window.scrollTo({ top: 800, behavior: 'smooth' });
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                    
+                    <div className="relative shrink-0">
+                      <div className="w-20 h-20 rounded-3xl bg-white/5 overflow-hidden border border-white/10 group-hover:border-amber-500/50 transition-all shadow-2xl">
+                        {dev.avatarUrl ? (
+                          <img src={dev.avatarUrl} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-700 bg-gray-900">
+                             <Users className="w-10 h-10" />
+                          </div>
+                        )}
+                      </div>
+                      <div className={`absolute -top-3 -right-3 w-10 h-10 rounded-full border-4 border-[#0a0a0c] flex items-center justify-center text-[14px] font-[950] shadow-2xl z-10 ${
+                        idx === 0 ? 'bg-amber-500 text-amber-950 scale-125' : 
+                        idx === 1 ? 'bg-slate-400 text-slate-950' : 
+                        idx === 2 ? 'bg-orange-600 text-orange-950' :
+                        'bg-white/10 text-white'
+                      }`}>
+                        {idx + 1}
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 relative z-10">
+                      <div className="flex items-center justify-between mb-2">
+                        <p className="text-xl font-black uppercase text-white group-hover:text-amber-500 transition-colors tracking-tight italic">{dev.name}</p>
+                        <div className="flex items-center gap-3">
+                          <Zap className="w-5 h-5 text-amber-500 animate-pulse" />
+                          <span className="text-lg font-mono font-black text-white tracking-widest leading-none">
+                            <AnimatedCounter value={dev.contributions || 0} /> <span className="text-xs text-gray-500">XP</span>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[1px]">
+                        <motion.div 
+                          initial={{ width: 0 }}
+                          animate={{ width: `${Math.min((dev.contributions || 0) * 10, 100)}%` }}
+                          className={`h-full rounded-full bg-gradient-to-r ${
+                            idx === 0 ? 'from-amber-600 to-amber-300' :
+                            idx === 1 ? 'from-slate-500 to-slate-300' :
+                            idx === 2 ? 'from-orange-700 to-orange-400' :
+                            'from-gray-600 to-gray-400'
+                          }`}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+
+                {eliteDevelopers.length === 0 && (
+                  <div className="py-24 text-center space-y-6">
+                    <Activity className="w-16 h-16 text-gray-800 mx-auto animate-pulse" />
+                    <p className="text-sm text-gray-600 uppercase font-black tracking-[0.4em]">Protocolo_Vazio: Aguardando contribuições...</p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Footer */}
       <footer className="border-t border-white/5 py-16 bg-surface-card/30">
