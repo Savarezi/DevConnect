@@ -62,7 +62,6 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
 
   return (
     <motion.div
-      layout
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       onMouseEnter={() => setIsHovered(true)}
@@ -172,7 +171,7 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
-                    <p className="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] italic">Interests_Matrix</p>
+                    <p className="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] italic">Stack Tecnológica</p>
                     <ChevronDown className="w-3 h-3 text-brand-primary animate-bounce mt-1" />
                   </div>
                   <div className="flex flex-wrap justify-center gap-2 max-h-[120px] overflow-y-auto custom-scrollbar pr-1">
@@ -180,7 +179,7 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
                       <button 
                         key={idx} 
                         onClick={() => onTagClick?.(tag.trim())}
-                        className="px-2.5 py-1.5 rounded-lg bg-brand-primary/5 text-[9px] font-black text-brand-primary/70 border border-brand-primary/10 hover:border-brand-primary/40 hover:bg-brand-primary/10 hover:text-brand-primary transition-all cursor-pointer uppercase tracking-wider"
+                        className="px-2.5 py-1.5 rounded-lg bg-white/5 text-[9px] font-black text-white/90 border border-white/10 hover:border-brand-primary/50 hover:bg-brand-primary/20 hover:text-white transition-all cursor-pointer uppercase tracking-wider"
                       >
                         {tag.trim()}
                       </button>

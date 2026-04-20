@@ -1,27 +1,27 @@
 # ⚛️ DEVCONNECT - Elite Developer Hub
 
-**DevConnect** é uma plataforma futurista de networking projetada para conectar talentos técnicos de alta performance. Com uma interface inspirada em terminais de alta tecnologia e estética cyberpunk/minimalista, a plataforma permite que desenvolvedores criem perfis profissionais robustos e descubram conexões valiosas no ecossistema tech.
+**DevConnect** é uma plataforma futurista de networking projetada para conectar talentos técnicos de alta performance. Com uma interface inspirada em terminais de alta tecnologia e estética cyberpunk/minimalista, a plataforma permite que desenvolvedores criem perfis profissionais robustos, ganhem reconhecimento através de contribuições e descubram conexões valiosas no ecossistema tech.
 
-![Arquitetura](https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1200)
+![Interface Futurista](https://images.unsplash.com/photo-1550439062-609e1531270e?auto=format&fit=crop&q=80&w=1200)
 
-## 🚀 Funcionalidades Principais
+## 🚀 Funcionalidades de Elite
 
-- **Autenticação Segura:** Login real integrado com Google OAuth via Supabase Auth.
-- **Perfis Dinâmicos:** Criação e edição de perfis profissionais com Stack Tecnológica e links sociais.
-- **Interface de Alta Performance:** UI responsiva construída com Tailwind CSS e animações fluidas via Framer Motion.
-- **Banco de Dados em Tempo Real:** Integração total com Supabase para persistência de dados instantânea.
-- **Filtros Avançados:** Sistema de busca e filtragem por área de atuação e tecnologia.
-- **Design Futurista:** Estética "High-Tech" com efeitos neon, glassmorphism e tipografia premium.
+- **Autenticação Real:** Integração completa com Google Auth via Supabase para controle de identidade.
+- **Hub de Comunidade (Fórum):** Espaço exclusivo para compartilhamento de códigos, dicas de cursos e discussões técnicas em tempo real.
+- **Sistema de XP e Ranking:** Gamificação baseada em contribuições. Ganhe XP ao postar no fórum e suba no **Ranking Elite**.
+- **Medalhas de Reconhecimento:** Sistema visual que identifica especialistas (ex: "Programador", "Mentor") e níveis de contribuição (Bronze, Prata, Ouro).
+- **Cards Dinâmicos (Hover Experience):** Interface limpa e escalável onde a Tech Stack é revelada suavemente ao passar o mouse.
+- **Filtros de Rede Neural:** Busca avançada por tecnologia e área de atuação com filtragem instantânea.
+- **Design Cyber-Premium:** Estética de alta fidelidade com stardust effects, neon glow e glassmorphism.
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Stack Tecnológica
 
 - **Frontend:** [React 19](https://react.dev/) + [Vite](https://vitejs.dev/)
 - **Estilo:** [Tailwind CSS 4](https://tailwindcss.com/)
 - **Animações:** [Framer Motion](https://www.framer.com/motion/)
-- **Backend/DB:** [Supabase](https://supabase.com/)
-- **Autenticação:** [Google Cloud OAuth](https://console.cloud.google.com/)
+- **Backend/Real-time:** [Supabase](https://supabase.com/) (Database, Auth, RLS)
 - **Ícones:** [Lucide React](https://lucide.dev/)
-- **Tipografia:** Plus Jakarta Sans & JetBrains Mono
+- **Tipografia:** Plus Jakarta Sans & Inter
 
 ## 📦 Como Rodar o Projeto
 
