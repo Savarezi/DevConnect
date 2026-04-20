@@ -15,10 +15,15 @@ import {
   Users,
   AlertCircle,
   Github,
-  MessageSquare
+  MessageSquare,
+  Trophy,
+  Activity,
+  Zap,
+  Sparkles
 } from 'lucide-react';
 import { Developer, DeveloperFormData } from './types';
 import { developerService } from './services/developerService';
+import { geminiService } from './services/geminiService';
 import { supabase } from './lib/supabase';
 import DeveloperCard from './components/DeveloperCard';
 import DeveloperForm from './components/DeveloperForm';
@@ -55,6 +60,7 @@ export default function App() {
   const [areaFilter, setAreaFilter] = useState('Todas');
   const [currentOwnerId, setCurrentOwnerId] = useState<string>('');
   const [activeTab, setActiveTab] = useState<'directory' | 'forum'>('directory');
+  const [aiTip, setAiTip] = useState<string>('');
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -107,6 +113,9 @@ export default function App() {
 
   useEffect(() => {
     fetchDevelopers();
+    
+    // Generate AI Tip
+    geminiService.generateTechTip().then(setAiTip);
   }, [session]);
 
   const handleLogout = async () => {
@@ -148,6 +157,12 @@ export default function App() {
     });
   }, [developers, searchTerm, areaFilter]);
 
+  const eliteDevelopers = useMemo(() => {
+    return [...developers]
+      .sort((a, b) => (b.contributions || 0) - (a.contributions || 0))
+      .slice(0, 3);
+  }, [developers]);
+
   if (!session) {
     return <AuthScreen />;
   }
@@ -175,12 +190,29 @@ export default function App() {
       />
       
       {/* Header / Hero Section */}
-      <header className="relative py-20 overflow-hidden">
-        {/* Background Gradients */}
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] -z-10" />
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] -z-10" />
-        
-        <div className="max-w-7xl mx-auto px-6">
+      <header className="relative py-12 overflow-hidden border-b border-white/5">
+        <div className="max-w-7xl mx-auto px-6 mb-12">
+          {/* Top Info Bar */}
+          <div className="flex items-center gap-6 py-3 px-6 bg-brand-primary/[0.03] border border-brand-primary/10 rounded-2xl mb-8 overflow-hidden">
+            <div className="flex items-center gap-2 text-brand-primary shrink-0">
+              <Activity className="w-4 h-4 animate-pulse" />
+              <span className="text-[9px] font-black uppercase tracking-widest">Global Status: ONLINE [NEXUS_SYNC]</span>
+            </div>
+            <div className="h-4 w-px bg-white/10 mx-2 hidden md:block" />
+            <div className="flex-1 overflow-hidden hidden md:block">
+              <motion.div 
+                animate={{ x: [400, -2000] }}
+                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                className="whitespace-nowrap text-[9px] font-mono text-gray-500 uppercase tracking-widest"
+              >
+                Últimas Atividades: 
+                <span className="text-white mx-4">Novo post no fórum por Gabriel...</span>
+                <span className="text-white mx-4">Patricia Oliveira atingiu nível Mentor...</span>
+                <span className="text-white mx-4">5 novos desenvolvedores ingressaram na rede...</span>
+                <span className="text-brand-primary mx-4">#CODE_TIP: {aiTip || 'Sincronizando dicas da rede...'}</span>
+              </motion.div>
+            </div>
+          </div>
           <div className="flex justify-between items-center mb-8">
             <nav className="flex items-center gap-3 p-2 bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl">
               <button 
@@ -322,14 +354,45 @@ export default function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 pb-40">
-        <SearchFilters 
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          areaFilter={areaFilter}
-          onAreaFilterChange={setAreaFilter}
-        />
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
+          <div className="space-y-12">
+            <div className="bg-surface-card/40 border border-brand-primary/20 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-3xl -z-10 group-hover:bg-brand-primary/20 transition-all" />
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-brand-primary/20 flex items-center justify-center text-brand-primary shrink-0 relative">
+                  <Sparkles className="w-8 h-8" />
+                  <div className="absolute inset-0 bg-brand-primary/40 blur-xl animate-pulse" />
+                </div>
+                <div>
+                  <h3 className="text-xs font-black text-brand-primary uppercase tracking-[0.3em] mb-1 flex items-center gap-2">
+                    Insight de IA <div className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-ping" />
+                  </h3>
+                  <p className="text-sm font-medium text-gray-300 leading-relaxed italic">
+                    "{aiTip || 'As melhores mentes não estão apenas codificando, mas compartilhando conhecimento para evoluir juntas.'}"
+                  </p>
+                </div>
+                <button 
+                  onClick={async () => {
+                    setAiTip('Gerando novo insight...');
+                    const tip = await geminiService.generateTechTip();
+                    setAiTip(tip);
+                  }}
+                  className="ml-auto p-4 rounded-xl hover:bg-white/5 text-gray-500 hover:text-brand-primary transition-all group/btn"
+                  title="Atualizar Dica"
+                >
+                  <RefreshCcw className="w-5 h-5 group-hover/btn:rotate-180 transition-transform duration-700" />
+                </button>
+              </div>
+            </div>
 
-        {isLoading ? (
+            <SearchFilters 
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              areaFilter={areaFilter}
+              onAreaFilterChange={setAreaFilter}
+            />
+
+            {isLoading ? (
           <div className="flex flex-col items-center justify-center py-40 gap-6">
             <div className="relative">
               <RefreshCcw className="w-12 h-12 text-brand-primary animate-spin" />
@@ -367,6 +430,76 @@ export default function App() {
             )}
           </>
         )}
+      </div>
+
+          {/* Right Sidebar: Elite Ranking */}
+          <aside className="space-y-8">
+            <div className="bg-surface-card/60 border border-white/10 rounded-[2.5rem] p-8 backdrop-blur-3xl sticky top-8">
+              <div className="flex items-center justify-between mb-8">
+                <div>
+                  <h3 className="text-lg font-black uppercase tracking-tighter">Ranking Elite</h3>
+                  <p className="text-[9px] font-mono text-brand-primary font-bold uppercase tracking-widest mt-1">top_contributors</p>
+                </div>
+                <Trophy className="w-6 h-6 text-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.4)]" />
+              </div>
+
+              <div className="space-y-6">
+                {eliteDevelopers.map((dev, idx) => (
+                  <motion.div 
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.2 }}
+                    key={dev.id} 
+                    className="flex items-center gap-4 group cursor-pointer"
+                    onClick={() => {
+                      setSearchTerm(dev.name);
+                      window.scrollTo({ top: 500, behavior: 'smooth' });
+                    }}
+                  >
+                    <div className="relative">
+                      <div className="w-12 h-12 rounded-xl bg-white/5 overflow-hidden border border-white/10 group-hover:border-brand-primary/50 transition-all">
+                        {dev.avatarUrl ? (
+                          <img src={dev.avatarUrl} alt="" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-gray-700">
+                             <Users className="w-6 h-6" />
+                          </div>
+                        )}
+                      </div>
+                      <div className={`absolute -top-2 -right-2 w-6 h-6 rounded-full border-2 border-[#020203] flex items-center justify-center text-[10px] font-black ${
+                        idx === 0 ? 'bg-amber-500 text-amber-950' : 
+                        idx === 1 ? 'bg-slate-400 text-slate-950' : 
+                        'bg-orange-600 text-orange-950'
+                      }`}>
+                        {idx + 1}
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-[11px] font-black uppercase text-white group-hover:text-brand-primary transition-colors">{dev.name}</p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <Zap className="w-3 h-3 text-brand-primary" />
+                        <span className="text-[9px] font-mono text-gray-500 uppercase">{dev.contributions} Contribuições</span>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+
+                {eliteDevelopers.length === 0 && (
+                  <p className="text-[10px] text-gray-600 text-center py-4 uppercase font-bold tracking-widest italic">Aguardando dados da rede...</p>
+                )}
+              </div>
+
+              <div className="mt-10 pt-8 border-t border-white/5">
+                <div className="p-5 rounded-2xl bg-brand-primary/5 border border-brand-primary/10">
+                  <p className="text-[9px] font-black text-brand-primary uppercase tracking-[0.2em] mb-2">Desafio NexuS</p>
+                  <p className="text-[10px] text-gray-500 leading-relaxed uppercase font-bold italic tracking-tighter">
+                    Ocupe o primeiro lugar para desbloquear o status <span className="text-white">"Guardian of Code"</span> na rede global.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
       </main>
 
       {/* Footer */}
