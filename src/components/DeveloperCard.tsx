@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { motion } from 'motion/react';
-import { Linkedin, Github, ExternalLink, MapPin, Briefcase, Edit2, MessageSquare, Zap, Target } from 'lucide-react';
+import { Linkedin, Github, ExternalLink, MapPin, Briefcase, Edit2, MessageSquare, Zap, Target, Code2, GraduationCap } from 'lucide-react';
 import { Developer } from '../types';
 import Avatar from './Avatar';
 
@@ -38,6 +38,25 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
   };
 
   const level = getContributionLevel();
+
+  const specialties = [
+    { 
+      condition: (developer.codePosts || 0) >= 3, 
+      label: 'Programador', 
+      icon: Code2, 
+      color: 'text-emerald-400', 
+      bg: 'bg-emerald-400/10', 
+      border: 'border-emerald-400/30' 
+    },
+    { 
+      condition: (developer.coursePosts || 0) >= 3, 
+      label: 'Mentor', 
+      icon: GraduationCap, 
+      color: 'text-indigo-400', 
+      bg: 'bg-indigo-400/10', 
+      border: 'border-indigo-400/30' 
+    }
+  ].filter(s => s.condition);
 
   return (
     <motion.div
@@ -87,6 +106,23 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
                 </div>
               )}
             </div>
+
+            {/* Specialties Medals */}
+            {specialties.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-2 mt-2">
+                {specialties.map((spec, idx) => (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg border text-[8px] font-black uppercase tracking-widest ${spec.bg} ${spec.color} ${spec.border}`}
+                  >
+                    <spec.icon className="w-2.5 h-2.5" />
+                    {spec.label}
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </div>
           
           <div className="flex flex-col items-center gap-2">

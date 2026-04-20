@@ -17,6 +17,8 @@ export interface Developer {
   githubUrl: string;
   createdAt: string;
   contributions?: number;
+  codePosts?: number;
+  coursePosts?: number;
 }
 
 export type DeveloperFormData = Omit<Developer, 'id' | 'createdAt' | 'ownerId'>;

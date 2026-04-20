@@ -22,7 +22,7 @@ export const developerService = {
       .from('profiles')
       .select(`
         *,
-        contributions:forum_posts(count)
+        forum_posts(category)
       `)
       .order('created_at', { ascending: false });
 
@@ -31,19 +31,24 @@ export const developerService = {
       return [];
     }
 
-    return (data || []).map(item => ({
-      id: item.id,
-      ownerId: item.user_id,
-      name: item.name,
-      avatarUrl: item.avatar_url,
-      currentArea: item.current_area,
-      interestArea: item.tech_stack || '',
-      seniority: item.seniority as any,
-      linkedinUrl: item.linkedin_url || '',
-      githubUrl: item.github_url || '',
-      createdAt: item.created_at,
-      contributions: item.contributions?.[0]?.count || 0,
-    }));
+    return (data || []).map(item => {
+      const posts = item.forum_posts || [];
+      return {
+        id: item.id,
+        ownerId: item.user_id,
+        name: item.name,
+        avatarUrl: item.avatar_url,
+        currentArea: item.current_area,
+        interestArea: item.tech_stack || '',
+        seniority: item.seniority as any,
+        linkedinUrl: item.linkedin_url || '',
+        githubUrl: item.github_url || '',
+        createdAt: item.created_at,
+        contributions: posts.length,
+        codePosts: posts.filter((p: any) => p.category === 'Código').length,
+        coursePosts: posts.filter((p: any) => p.category === 'Dica de Curso').length,
+      };
+    });
   },
 
   addDeveloper: async (data: DeveloperFormData): Promise<Developer> => {
