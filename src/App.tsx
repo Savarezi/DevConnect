@@ -158,9 +158,10 @@ export default function App() {
   }, [developers, searchTerm, areaFilter]);
 
   const eliteDevelopers = useMemo(() => {
-    return [...developers]
+    return developers
+      .filter(dev => (dev.contributions || 0) > 0)
       .sort((a, b) => (b.contributions || 0) - (a.contributions || 0))
-      .slice(0, 3);
+      .slice(0, 5);
   }, [developers]);
 
   if (!session) {
