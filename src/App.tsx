@@ -14,7 +14,8 @@ import {
   RefreshCcw, 
   Users,
   AlertCircle,
-  Github
+  Github,
+  MessageSquare
 } from 'lucide-react';
 import { Developer, DeveloperFormData } from './types';
 import { developerService } from './services/developerService';
@@ -176,26 +177,38 @@ export default function App() {
         
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-center mb-8">
-            <nav className="flex items-center gap-2 p-1.5 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-xl">
+            <nav className="flex items-center gap-3 p-2 bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl">
               <button 
                 onClick={() => setActiveTab('directory')}
-                className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all relative group ${
                   activeTab === 'directory' 
-                    ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20' 
+                    ? 'bg-white/10 text-white border border-white/20' 
                     : 'text-gray-500 hover:text-white'
                 }`}
               >
+                <div className={`w-1.5 h-1.5 rounded-full ${activeTab === 'directory' ? 'bg-brand-primary animate-pulse' : 'bg-gray-700'}`} />
                 Hub de Devs
               </button>
+              
               <button 
                 onClick={() => setActiveTab('forum')}
-                className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all relative overflow-hidden group ${
                   activeTab === 'forum' 
-                    ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20' 
-                    : 'text-gray-500 hover:text-white'
+                    ? 'bg-brand-primary text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] border border-brand-primary/50' 
+                    : 'bg-indigo-500/5 text-indigo-400/50 hover:text-indigo-400 border border-indigo-500/10 hover:border-indigo-500/30'
                 }`}
               >
-                Comunidade
+                {/* Subtle glass effect only for Community */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                
+                <MessageSquare className={`w-4 h-4 ${activeTab === 'forum' ? 'text-white' : 'text-indigo-500/50 group-hover:text-indigo-400'}`} />
+                <span>Comunidade</span>
+                
+                {/* Experimental "Live" dot for Forum */}
+                <div className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+                </div>
               </button>
             </nav>
             <button

@@ -16,7 +16,10 @@ import {
   ChevronRight,
   Send,
   User,
-  Cpu
+  Cpu,
+  Sparkles,
+  Zap,
+  Globe
 } from 'lucide-react';
 import { ForumPost, ForumComment, PostFormData } from '../types';
 import { forumService } from '../services/forumService';
@@ -112,72 +115,102 @@ export default function ForumScreen({ onBack }: ForumScreenProps) {
   });
 
   return (
-    <div className="min-h-screen bg-[#020203] text-white p-6 pb-20">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="min-h-screen bg-[#020203] text-white p-6 pb-20 relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute top-0 left-[-10%] w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-[-10%] w-[400px] h-[400px] bg-indigo-600/5 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-6xl mx-auto space-y-12 relative z-10">
         
         {/* Sub Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="flex items-center gap-4">
-            <button 
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 pt-8">
+          <div className="flex items-center gap-6">
+            <motion.button 
+              whileHover={{ scale: 1.1, x: -4 }}
+              whileTap={{ scale: 0.9 }}
               onClick={selectedPost ? () => setSelectedPost(null) : onBack}
-              className="p-3 rounded-xl bg-white/5 border border-white/10 hover:bg-brand-primary/10 hover:border-brand-primary/50 transition-all text-gray-400 hover:text-brand-primary"
+              className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-brand-primary/10 hover:border-brand-primary/50 transition-all text-gray-400 hover:text-brand-primary shadow-xl backdrop-blur-md"
             >
               <ArrowLeft className="w-5 h-5" />
-            </button>
+            </motion.button>
             <div>
-              <h1 className="text-3xl font-black tracking-tighter uppercase leading-none">
-                {selectedPost ? 'Discussão' : 'Hub de Conhecimento'}
+              <div className="flex items-center gap-3 mb-1">
+                <Sparkles className="w-4 h-4 text-brand-primary animate-pulse" />
+                <span className="text-[10px] font-mono text-brand-primary font-black uppercase tracking-[0.4em]">
+                  {selectedPost ? 'protocol_detailed_view' : 'nexus_community_feed'}
+                </span>
+              </div>
+              <h1 className="text-5xl font-black tracking-tighter uppercase leading-none">
+                {selectedPost ? 'Discussão' : 'Hub de <span class="text-brand-primary">Conhecimento.</span>'}
               </h1>
-              <p className="text-[10px] font-mono text-brand-primary font-bold uppercase tracking-[0.3em] mt-1">
-                {selectedPost ? 'detalhes_do_objeto' : 'central_de_inteligência'}
-              </p>
             </div>
           </div>
 
           {!selectedPost && (
-            <div className="flex items-center gap-3">
-              <div className="relative group">
+            <div className="flex items-center gap-4">
+              <div className="relative group hidden sm:block">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-brand-primary transition-colors" />
                 <input 
                   type="text" 
-                  placeholder="Pesquisar no fórum..."
+                  placeholder="Pesquisar inteligência..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 pr-6 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-brand-primary/50 outline-none w-64 text-sm font-medium"
+                  className="pl-12 pr-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 outline-none w-72 text-sm font-medium backdrop-blur-xl transition-all"
                 />
               </div>
-              <button 
+              <motion.button 
+                whileHover={{ scale: 1.05, y: -2 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => setIsCreating(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-brand-primary text-white rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-brand-primary/20 hover:scale-105 transition-all"
+                className="flex items-center gap-3 px-8 py-4 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-[0_10px_30px_rgba(139,92,246,0.3)] hover:shadow-brand-primary/40 transition-all"
               >
                 <Plus className="w-4 h-4" />
-                Novo Post
-              </button>
+                Nova Postagem
+              </motion.button>
             </div>
           )}
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-12">
           
           {/* Categories Sidebar */}
           {!selectedPost && (
-            <aside className="space-y-6 hidden lg:block">
-              <div className="space-y-2">
-                <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest px-4 mb-4">Categorias</p>
-                {categories.map(cat => (
-                  <button
-                    key={cat}
-                    onClick={() => setFilter(cat)}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all font-bold text-xs uppercase tracking-widest ${
-                      filter === cat 
-                        ? 'bg-brand-primary text-white shadow-lg shadow-brand-primary/20' 
-                        : 'text-gray-500 hover:bg-white/5 hover:text-white'
-                    }`}
-                  >
-                    {cat}
-                    <ChevronRight className={`w-4 h-4 ${filter === cat ? 'opacity-100' : 'opacity-0'} transition-opacity`} />
-                  </button>
-                ))}
+            <aside className="space-y-10 hidden lg:block">
+              <div className="space-y-4">
+                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] px-4 flex items-center gap-2">
+                  <Globe className="w-3 h-3" />
+                  Navegação
+                </p>
+                <div className="space-y-1">
+                  {categories.map(cat => (
+                    <button
+                      key={cat}
+                      onClick={() => setFilter(cat)}
+                      className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl transition-all font-bold text-[10px] uppercase tracking-[0.2em] group relative overflow-hidden ${
+                        filter === cat 
+                          ? 'text-white border border-brand-primary/30' 
+                          : 'text-gray-500 hover:text-white border border-transparent'
+                      }`}
+                    >
+                      {filter === cat && (
+                        <motion.div layoutId="nav-bg" className="absolute inset-0 bg-brand-primary/10 -z-10" />
+                      )}
+                      
+                      <span className="relative z-10 flex items-center gap-3">
+                        <div className={`w-1.5 h-1.5 rounded-full transition-all ${filter === cat ? 'bg-brand-primary scale-125' : 'bg-gray-800'}`} />
+                        {cat}
+                      </span>
+                      <ChevronRight className={`w-4 h-4 transition-transform ${filter === cat ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'}`} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className="p-6 rounded-3xl bg-indigo-500/5 border border-indigo-500/10 space-y-4">
+                <Zap className="w-6 h-6 text-indigo-400" />
+                <p className="text-[10px] font-black uppercase tracking-widest leading-loose text-indigo-300">
+                  Compartilhe conhecimento e aumente seu <span className="text-white">Expert Score</span> na rede.
+                </p>
               </div>
             </aside>
           )}
@@ -307,59 +340,75 @@ export default function ForumScreen({ onBack }: ForumScreenProps) {
                   key="list"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="grid grid-cols-1 gap-4"
+                  className="grid grid-cols-1 gap-6"
                 >
-                  {filteredPosts.map(post => (
+                  {filteredPosts.map((post, idx) => (
                     <motion.div
                       layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: idx * 0.05 }}
                       key={post.id}
                       onClick={() => handleSelectPost(post)}
-                      className="group bg-surface-card/40 border border-white/5 rounded-3xl p-6 hover:border-brand-primary/30 transition-all cursor-pointer backdrop-blur-xl relative overflow-hidden"
+                      className="group bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:bg-white/[0.04] hover:border-brand-primary/40 transition-all cursor-pointer backdrop-blur-2xl relative overflow-hidden flex flex-col sm:flex-row gap-8"
                     >
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-                      
-                      <div className="relative flex flex-col gap-4">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <Tag className="w-3 h-3 text-brand-primary" />
-                            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-brand-primary">{post.category}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-gray-600 text-[10px] font-mono">
-                            <Clock className="w-3 h-3" />
-                            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true, locale: ptBR })}
+                      {/* Left: Metadata and Category */}
+                      <div className="flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-4 sm:w-32 flex-shrink-0">
+                        <div className="flex flex-col gap-1">
+                          <Tag className="w-4 h-4 text-brand-primary mb-1" />
+                          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-brand-primary leading-none">{post.category}</span>
+                        </div>
+                        
+                        <div className="hidden sm:flex flex-col gap-1 pt-4 border-t border-white/5 w-full">
+                          <span className="text-[8px] font-mono text-gray-600 uppercase tracking-widest mb-1">DATA_LOG</span>
+                          <div className="flex items-center gap-2 text-gray-400 text-[10px] font-mono">
+                            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: false, locale: ptBR })}
                           </div>
                         </div>
+                      </div>
 
-                        <h3 className="text-xl font-black tracking-tighter uppercase group-hover:text-brand-primary transition-colors">
+                      {/* Center: Content */}
+                      <div className="flex-1 space-y-4">
+                        <h3 className="text-2xl font-black tracking-tighter uppercase group-hover:text-brand-primary transition-colors leading-tight">
                           {post.title}
                         </h3>
 
-                        <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed font-medium">
-                          {post.content}
+                        <p className="text-gray-500 line-clamp-2 leading-relaxed text-sm font-medium italic">
+                          "{post.content}"
                         </p>
 
-                        <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                          <div className="flex items-center gap-3">
-                            <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center overflow-hidden">
+                        <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                          <div className="flex items-center gap-4">
+                            <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
                               {post.author?.avatarUrl ? (
                                 <img src={post.author.avatarUrl} alt="" className="w-full h-full object-cover" />
                               ) : (
-                                <User className="w-3 h-3 text-gray-500" />
+                                <User className="w-4 h-4 text-gray-500" />
                               )}
                             </div>
-                            <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{post.author?.name}</span>
+                            <div className="flex flex-col">
+                              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.2em]">{post.author?.name}</span>
+                              <span className="text-[7px] text-brand-primary font-mono uppercase">VERIFIED_CONTRIBUTOR</span>
+                            </div>
                           </div>
 
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-1 text-gray-500">
-                              <ThumbsUp className={`w-3.5 h-3.5 ${post.hasLiked ? 'text-brand-primary fill-current' : ''}`} />
-                              <span className="text-[10px] font-black">{post.likesCount}</span>
-                            </div>
-                            <div className="flex items-center gap-1 text-gray-500">
-                              <MessageSquare className="w-3.5 h-3.5" />
-                              <span className="text-[10px] font-black">{post.commentsCount}</span>
+                          <div className="flex items-center gap-6">
+                            <motion.div whileHover={{ scale: 1.1 }} className="flex items-center gap-2 group/stat">
+                              <ThumbsUp className={`w-4 h-4 transition-all ${post.hasLiked ? 'text-brand-primary fill-current' : 'text-gray-600 group-hover/stat:text-brand-primary'}`} />
+                              <span className={`text-[10px] font-black ${post.hasLiked ? 'text-brand-primary' : 'text-gray-600'}`}>{post.likesCount}</span>
+                            </motion.div>
+                            <div className="flex items-center gap-2 group/stat">
+                              <MessageSquare className="w-4 h-4 text-gray-600 group-hover/stat:text-indigo-400 transition-colors" />
+                              <span className="text-[10px] font-black text-gray-600 group-hover/stat:text-indigo-400">{post.commentsCount}</span>
                             </div>
                           </div>
+                        </div>
+                      </div>
+
+                      {/* Right: Hover Arrow */}
+                      <div className="hidden lg:flex items-center justify-center translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500">
+                        <div className="w-12 h-12 rounded-full bg-brand-primary/20 flex items-center justify-center text-brand-primary">
+                          <ChevronRight className="w-6 h-6" />
                         </div>
                       </div>
                     </motion.div>
