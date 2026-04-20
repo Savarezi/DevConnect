@@ -98,46 +98,27 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
               <div className={`inline-flex px-3 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest ${getSeniorityColors(developer.seniority)}`}>
                 {developer.seniority}
               </div>
+              
+              {level && (
+                <div className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest ${level.bg} ${level.color} ${level.border} animate-pulse`}>
+                  <level.icon className="w-2.5 h-2.5" />
+                  Contribuidor {level.label} ({contributionCount})
+                </div>
+              )}
             </div>
 
-            {/* Level/XP Progress Bar */}
-            {contributionCount > 0 && (
-              <div className="w-full max-w-[180px] mx-auto space-y-2 mt-4">
-                <div className="flex justify-between items-center px-1">
-                  <span className={`text-[8px] font-black uppercase tracking-widest ${level?.color || 'text-brand-primary'}`}>
-                    Level: {level?.label || 'Iniciante'}
-                  </span>
-                  <span className="text-[8px] font-mono text-gray-500 font-bold">
-                    {contributionCount} XP
-                  </span>
-                </div>
-                <div className="h-1.5 w-full bg-white/5 border border-white/10 rounded-full overflow-hidden p-[1px]">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: `${Math.min((contributionCount / 10) * 100, 100)}%` }}
-                    className={`h-full rounded-full bg-gradient-to-r ${
-                      contributionCount >= 10 ? 'from-amber-500 to-yellow-300' :
-                      contributionCount >= 5 ? 'from-slate-400 to-white' :
-                      'from-orange-600 to-orange-400'
-                    } shadow-[0_0_10px_rgba(139,92,246,0.3)]`}
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Specialties Medals - Minimalist Style */}
+            {/* Specialties Medals */}
             {specialties.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-3 mt-4">
+              <div className="flex flex-wrap justify-center gap-2 mt-2">
                 {specialties.map((spec, idx) => (
                   <motion.div 
                     key={idx}
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    className={`p-2 rounded-xl border ${spec.bg} ${spec.color} ${spec.border} transition-all shadow-lg cursor-help`}
-                    title={`${spec.label} reconhecido pela comunidade`}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg border text-[8px] font-black uppercase tracking-widest ${spec.bg} ${spec.color} ${spec.border}`}
                   >
-                    <spec.icon className="w-4 h-4" />
+                    <spec.icon className="w-2.5 h-2.5" />
+                    {spec.label}
                   </motion.div>
                 ))}
               </div>
