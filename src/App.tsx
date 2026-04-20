@@ -190,29 +190,12 @@ export default function App() {
       />
       
       {/* Header / Hero Section */}
-      <header className="relative py-12 overflow-hidden border-b border-white/5">
-        <div className="max-w-7xl mx-auto px-6 mb-12">
-          {/* Top Info Bar */}
-          <div className="flex items-center gap-6 py-3 px-6 bg-brand-primary/[0.03] border border-brand-primary/10 rounded-2xl mb-8 overflow-hidden">
-            <div className="flex items-center gap-2 text-brand-primary shrink-0">
-              <Activity className="w-4 h-4 animate-pulse" />
-              <span className="text-[9px] font-black uppercase tracking-widest">Global Status: ONLINE [NEXUS_SYNC]</span>
-            </div>
-            <div className="h-4 w-px bg-white/10 mx-2 hidden md:block" />
-            <div className="flex-1 overflow-hidden hidden md:block">
-              <motion.div 
-                animate={{ x: [400, -2000] }}
-                transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-                className="whitespace-nowrap text-[9px] font-mono text-gray-500 uppercase tracking-widest"
-              >
-                Últimas Atividades: 
-                <span className="text-white mx-4">Novo post no fórum por Gabriel...</span>
-                <span className="text-white mx-4">Patricia Oliveira atingiu nível Mentor...</span>
-                <span className="text-white mx-4">5 novos desenvolvedores ingressaram na rede...</span>
-                <span className="text-brand-primary mx-4">#CODE_TIP: {aiTip || 'Sincronizando dicas da rede...'}</span>
-              </motion.div>
-            </div>
-          </div>
+      <header className="relative py-20 overflow-hidden">
+        {/* Background Gradients */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] -z-10" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] -z-10" />
+        
+        <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-between items-center mb-8">
             <nav className="flex items-center gap-3 p-2 bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl">
               <button 
@@ -354,45 +337,51 @@ export default function App() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 pb-40">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
-          <div className="space-y-12">
-            <div className="bg-surface-card/40 border border-brand-primary/20 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-primary/10 blur-3xl -z-10 group-hover:bg-brand-primary/20 transition-all" />
-              <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-16 h-16 rounded-2xl bg-brand-primary/20 flex items-center justify-center text-brand-primary shrink-0 relative">
-                  <Sparkles className="w-8 h-8" />
-                  <div className="absolute inset-0 bg-brand-primary/40 blur-xl animate-pulse" />
-                </div>
-                <div>
-                  <h3 className="text-xs font-black text-brand-primary uppercase tracking-[0.3em] mb-1 flex items-center gap-2">
-                    Insight de IA <div className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-ping" />
-                  </h3>
-                  <p className="text-sm font-medium text-gray-300 leading-relaxed italic">
-                    "{aiTip || 'As melhores mentes não estão apenas codificando, mas compartilhando conhecimento para evoluir juntas.'}"
-                  </p>
-                </div>
-                <button 
-                  onClick={async () => {
-                    setAiTip('Gerando novo insight...');
-                    const tip = await geminiService.generateTechTip();
-                    setAiTip(tip);
-                  }}
-                  className="ml-auto p-4 rounded-xl hover:bg-white/5 text-gray-500 hover:text-brand-primary transition-all group/btn"
-                  title="Atualizar Dica"
-                >
-                  <RefreshCcw className="w-5 h-5 group-hover/btn:rotate-180 transition-transform duration-700" />
-                </button>
+        <div className="space-y-8 mb-12">
+          {/* AI Insight Box - Full Width for better visibility */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-surface-card/40 border border-brand-primary/20 rounded-[2rem] p-8 backdrop-blur-xl relative overflow-hidden group shadow-[0_0_30px_rgba(139,92,246,0.1)]"
+          >
+            <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/10 blur-[100px] -z-10 group-hover:bg-brand-primary/20 transition-all" />
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="w-20 h-20 rounded-3xl bg-brand-primary/20 flex items-center justify-center text-brand-primary shrink-0 relative">
+                <Sparkles className="w-10 h-10" />
+                <div className="absolute inset-0 bg-brand-primary/40 blur-2xl animate-pulse" />
               </div>
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-xs font-black text-brand-primary uppercase tracking-[0.4em] mb-2 flex items-center justify-center md:justify-start gap-3">
+                  Inteligência NexuS <div className="w-2 h-2 rounded-full bg-brand-primary animate-ping" />
+                </h3>
+                <p className="text-xl md:text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">
+                  "{aiTip || 'Conectando à rede neural para gerar seu insight diário...'}"
+                </p>
+              </div>
+              <button 
+                onClick={async () => {
+                  setAiTip('Sincronizando...');
+                  const tip = await geminiService.generateTechTip();
+                  setAiTip(tip);
+                }}
+                className="p-5 rounded-2xl bg-white/5 hover:bg-brand-primary/10 text-gray-500 hover:text-brand-primary border border-white/10 hover:border-brand-primary/50 transition-all group/btn shadow-xl backdrop-blur-md"
+                title="Atualizar Insight"
+              >
+                <RefreshCcw className="w-6 h-6 group-hover/btn:rotate-180 transition-transform duration-1000" />
+              </button>
             </div>
+          </motion.div>
 
-            <SearchFilters 
-              searchTerm={searchTerm}
-              onSearchChange={setSearchTerm}
-              areaFilter={areaFilter}
-              onAreaFilterChange={setAreaFilter}
-            />
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12">
+            <div className="space-y-12">
+              <SearchFilters 
+                searchTerm={searchTerm}
+                onSearchChange={setSearchTerm}
+                areaFilter={areaFilter}
+                onAreaFilterChange={setAreaFilter}
+              />
 
-            {isLoading ? (
+              {isLoading ? (
           <div className="flex flex-col items-center justify-center py-40 gap-6">
             <div className="relative">
               <RefreshCcw className="w-12 h-12 text-brand-primary animate-spin" />
@@ -500,7 +489,8 @@ export default function App() {
             </div>
           </aside>
         </div>
-      </main>
+      </div>
+    </main>
 
       {/* Footer */}
       <footer className="border-t border-white/5 py-16 bg-surface-card/30">
