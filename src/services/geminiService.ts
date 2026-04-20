@@ -10,12 +10,13 @@ export const geminiService = {
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
       const seed = Math.random().toString(36).substring(7);
+      const timestamp = new Date().toISOString();
       const response = await ai.models.generateContent({
         model: "gemini-1.5-flash",
-        contents: `Gere uma dica técnica curta (máx 140 chars) e única sobre programação ou produtividade. Contexto aleatório: ${seed}. Use um tom moderno.`,
+        contents: `Gere uma dica técnica inédita e aleatória sobre desenvolvimento de software (máx 140 caracteres). Ref: ${seed}-${timestamp}. Seja criativo e evite clichês.`,
         config: {
-          systemInstruction: "Você é um mentor sênior. Seja direto, técnico e inspirador. Nunca repita a mesma dica.",
-          temperature: 0.9,
+          systemInstruction: "Você é um mentor técnico disruptivo. Sua missão é fornecer conselhos práticos, curtos e raros para desenvolvedores. Nunca use o mesmo conselho duas vezes. Mude o assunto a cada pedido (ex: performance, design, mindset, segurança).",
+          temperature: 1.0,
         }
       });
       
