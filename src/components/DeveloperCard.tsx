@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React from 'react';
-import { motion } from 'motion/react';
-import { Linkedin, Github, ExternalLink, MapPin, Briefcase, Edit2, MessageSquare, Zap, Target, Code2, GraduationCap } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { Linkedin, Github, ExternalLink, MapPin, Briefcase, Edit2, MessageSquare, Zap, Target, Code2, GraduationCap, ChevronDown } from 'lucide-react';
 import { Developer } from '../types';
 import Avatar from './Avatar';
 
@@ -16,6 +16,8 @@ interface DeveloperCardProps {
 }
 
 const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagClick }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   const getSeniorityColors = (level: string) => {
     switch (level) {
       case 'Estagiário': return 'bg-gray-400/10 text-gray-300 border-gray-400/30 shadow-[0_0_10px_rgba(156,163,175,0.2)]';
@@ -63,12 +65,14 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
       layout
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ y: -8 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="bg-surface-card border border-brand-primary/30 rounded-[2.5rem] p-10 shadow-[0_0_30px_rgba(139,92,246,0.15)] hover:shadow-brand-primary/30 hover:border-brand-primary/60 transition-all group relative overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+      className="bg-[#0a0a0c]/80 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl hover:shadow-brand-primary/20 hover:border-brand-primary/40 transition-all group relative overflow-hidden flex flex-col items-center text-center"
     >
       {/* Stardust Background Effect */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.1)_0%,transparent_100%),url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+      <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.05)_0%,transparent_100%),url('https://www.transparenttextures.com/patterns/stardust.png')]" />
 
       {/* Edit Button - Top Right Overlay */}
       {onEdit && (
@@ -81,105 +85,119 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
         </button>
       )}
 
-      <div className="flex flex-col items-center text-center space-y-8 relative z-10">
+      <div className="flex flex-col items-center w-full space-y-6 relative z-10">
         <div className="relative">
-          <Avatar src={developer.avatarUrl} name={developer.name} size="lg" />
-          <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-surface-base border-4 border-brand-primary/20 rounded-full flex items-center justify-center z-20 shadow-[0_0_10px_rgba(16,185,129,0.5)]">
-            <div className="w-2 h-2 rounded-full bg-emerald-400" />
+          <Avatar src={developer.avatarUrl} name={developer.name} size="md" />
+          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-[#0a0a0c] border-2 border-emerald-500/50 rounded-full flex items-center justify-center z-20">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </div>
         </div>
         
-        <div className="space-y-4">
+        <div className="space-y-4 w-full">
           <div className="space-y-1">
-            <h3 className="text-2xl font-[900] text-white tracking-tight leading-tight uppercase">
+            <h3 className="text-xl font-black text-white tracking-tighter uppercase leading-tight group-hover:text-brand-primary transition-colors">
               {developer.name}
             </h3>
-            <div className="flex items-center justify-center gap-2">
-              <div className={`inline-flex px-3 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest ${getSeniorityColors(developer.seniority)}`}>
+            <div className="flex flex-wrap items-center justify-center gap-2">
+              <div className={`px-2.5 py-0.5 rounded-full border text-[8px] font-black uppercase tracking-widest ${getSeniorityColors(developer.seniority)}`}>
                 {developer.seniority}
               </div>
               
               {level && (
-                <div className={`inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full border text-[9px] font-black uppercase tracking-widest ${level.bg} ${level.color} ${level.border} animate-pulse`}>
+                <div className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[8px] font-black uppercase tracking-widest ${level.bg} ${level.color} ${level.border}`}>
                   <level.icon className="w-2.5 h-2.5" />
-                  Contribuidor {level.label} ({contributionCount})
+                  {level.label}
                 </div>
               )}
             </div>
 
             {/* Specialties Medals */}
             {specialties.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-2 mt-2">
+              <div className="flex flex-wrap justify-center gap-2 mt-3">
                 {specialties.map((spec, idx) => (
-                  <motion.div 
+                  <div 
                     key={idx}
-                    initial={{ opacity: 0, y: 5 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg border text-[8px] font-black uppercase tracking-widest ${spec.bg} ${spec.color} ${spec.border}`}
+                    className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-lg border text-[7px] font-black uppercase tracking-widest ${spec.bg} ${spec.color} ${spec.border} shadow-[0_0_10px_rgba(0,0,0,0.5)]`}
                   >
-                    <spec.icon className="w-2.5 h-2.5" />
+                    <spec.icon className="w-2 h-2" />
                     {spec.label}
-                  </motion.div>
+                  </div>
                 ))}
               </div>
             )}
           </div>
           
-          <div className="flex flex-col items-center gap-2">
+          <div className="flex flex-col items-center gap-4">
             <button 
               onClick={() => onTagClick?.(developer.currentArea)}
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-primary/10 border border-brand-primary/20 text-[10px] font-black text-brand-primary uppercase tracking-[0.2em] shadow-[0_0_10px_rgba(139,92,246,0.2)] hover:bg-brand-primary/20 hover:border-brand-primary/40 transition-all cursor-pointer group/tag"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[9px] font-black text-white/50 uppercase tracking-[0.2em] hover:bg-brand-primary/10 hover:border-brand-primary/30 hover:text-brand-primary transition-all cursor-pointer group/tag"
             >
-              <div className="w-1.5 h-1.5 rounded-full bg-brand-primary animate-pulse group-hover/tag:scale-125 transition-transform" />
+              <div className="w-1.5 h-1.5 rounded-full bg-brand-primary/40 group-hover/tag:bg-brand-primary" />
               {developer.currentArea}
             </button>
-          </div>
-        </div>
 
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-brand-primary/20 to-transparent" />
-
-        <div className="w-full text-left space-y-4">
-          <div className="flex items-center justify-between">
-            <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] opacity-60">Tech Stack</p>
-            <div className="h-[2px] w-8 bg-brand-primary/30" />
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {developer.interestArea.split(',').map((tag, idx) => (
-              <button 
-                key={idx} 
-                onClick={() => onTagClick?.(tag.trim())}
-                className="px-3 py-2 rounded-xl bg-white/[0.04] text-[10px] font-black text-white/80 border border-white/10 hover:border-brand-primary/50 hover:bg-brand-primary/10 hover:text-white transition-all cursor-pointer uppercase tracking-wider active:scale-95"
+            <div className="flex items-center gap-3 w-full">
+              <a
+                href={developer.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0a66c2]/5 hover:bg-[#0a66c2]/10 border border-[#0a66c2]/10 hover:border-[#0a66c2]/40 transition-all text-[9.5px] font-black uppercase tracking-widest text-[#0a66c2] group/link"
               >
-                {tag.trim()}
-              </button>
-            ))}
+                <Linkedin className="w-3.5 h-3.5" />
+                LinkedIn
+              </a>
+              <a
+                href={developer.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 transition-all text-[9.5px] font-black uppercase tracking-widest text-gray-400 hover:text-white group/link"
+              >
+                <Github className="w-3.5 h-3.5" />
+                GitHub
+              </a>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 w-full pt-4">
-          <div className="grid grid-cols-2 gap-3">
-            <a
-              href={developer.linkedinUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-[#0a66c2]/10 hover:bg-[#0a66c2]/20 border border-[#0a66c2]/20 hover:border-[#0a66c2]/50 transition-all text-[11px] font-black uppercase tracking-widest text-[#0a66c2] group/link"
-            >
-              <Linkedin className="w-4 h-4 group-hover/link:scale-110 transition-transform" />
-              LinkedIn
-            </a>
-            <a
-              href={developer.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/30 transition-all text-[11px] font-black uppercase tracking-widest text-gray-300 group/link"
-            >
-              <Github className="w-4 h-4 group-hover/link:scale-110 transition-transform" />
-              GitHub
-            </a>
-          </div>
+        {/* Expandable Tech Stack on Hover */}
+        <div className="w-full">
+          <AnimatePresence>
+            {isHovered && (
+              <motion.div
+                initial={{ height: 0, opacity: 0, overflow: 'hidden' }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
+                className="pt-6 mt-4 border-t border-white/5"
+              >
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[9px] font-black text-gray-500 uppercase tracking-[0.3em] italic">Interests_Matrix</p>
+                    <ChevronDown className="w-3 h-3 text-brand-primary animate-bounce mt-1" />
+                  </div>
+                  <div className="flex flex-wrap justify-center gap-2 max-h-[120px] overflow-y-auto custom-scrollbar pr-1">
+                    {developer.interestArea.split(',').map((tag, idx) => (
+                      <button 
+                        key={idx} 
+                        onClick={() => onTagClick?.(tag.trim())}
+                        className="px-2.5 py-1.5 rounded-lg bg-brand-primary/5 text-[9px] font-black text-brand-primary/70 border border-brand-primary/10 hover:border-brand-primary/40 hover:bg-brand-primary/10 hover:text-brand-primary transition-all cursor-pointer uppercase tracking-wider"
+                      >
+                        {tag.trim()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+          
+          {!isHovered && (
+            <div className="flex justify-center pt-4 opacity-20 group-hover:opacity-0 transition-opacity">
+               <ChevronDown className="w-4 h-4 text-gray-500 animate-bounce" />
+            </div>
+          )}
         </div>
       </div>
-
       {/* Subtle corner highlight */}
       <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-brand-primary/20 blur-[60px] rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
     </motion.div>
