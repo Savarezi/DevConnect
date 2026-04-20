@@ -151,5 +151,21 @@ export const forumService = {
         .insert([{ post_id: postId, user_id: user.id }]);
       return true;
     }
+  },
+
+  deletePost: async (postId: string): Promise<void> => {
+    const { error } = await supabase
+      .from('forum_posts')
+      .delete()
+      .eq('id', postId);
+    if (error) throw error;
+  },
+
+  deleteComment: async (commentId: string): Promise<void> => {
+    const { error } = await supabase
+      .from('forum_comments')
+      .delete()
+      .eq('id', commentId);
+    if (error) throw error;
   }
 };

@@ -19,7 +19,8 @@ import {
   Cpu,
   Sparkles,
   Zap,
-  Globe
+  Globe,
+  Trash2
 } from 'lucide-react';
 import { ForumPost, ForumComment, PostFormData } from '../types';
 import { forumService } from '../services/forumService';
@@ -28,9 +29,10 @@ import { ptBR } from 'date-fns/locale';
 
 interface ForumScreenProps {
   onBack: () => void;
+  currentUserId: string;
 }
 
-export default function ForumScreen({ onBack }: ForumScreenProps) {
+export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps) {
   const [posts, setPosts] = useState<ForumPost[]>([]);
   const [selectedPost, setSelectedPost] = useState<ForumPost | null>(null);
   const [comments, setComments] = useState<ForumComment[]>([]);
@@ -83,6 +85,33 @@ export default function ForumScreen({ onBack }: ForumScreenProps) {
       setPosts(posts.map(p => p.id === selectedPost.id ? { ...p, commentsCount: (p.commentsCount || 0) + 1 } : p));
     } catch (error) {
       alert('Erro ao comentar.');
+    }
+  };
+
+  const handleDeletePost = async (postId: string, e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    if (!confirm('Tem certeza que deseja excluir esta postagem?')) return;
+    try {
+      await forumService.deletePost(postId);
+      if (selectedPost && selectedPost.id === postId) {
+        setSelectedPost(null);
+      }
+      fetchPosts();
+    } catch (error) {
+      alert('Erro ao excluir postagem.');
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!confirm('Tem certeza que deseja excluir este comentário?')) return;
+    try {
+      await forumService.deleteComment(commentId);
+      setComments(comments.filter(c => c.id !== commentId));
+      if (selectedPost) {
+        setPosts(posts.map(p => p.id === selectedPost.id ? { ...p, commentsCount: Math.max(0, (p.commentsCount || 0) - 1) } : p));
+      }
+    } catch (error) {
+      alert('Erro ao excluir comentário.');
     }
   };
 
@@ -141,7 +170,9 @@ export default function ForumScreen({ onBack }: ForumScreenProps) {
                 </span>
               </div>
               <h1 className="text-5xl font-black tracking-tighter uppercase leading-none">
-                {selectedPost ? 'Discussão' : 'Hub de <span class="text-brand-primary">Conhecimento.</span>'}
+                {selectedPost ? 'Discussão' : (
+                  <>Hub de <span className="text-brand-primary">Conhecimento.</span></>
+                )}
               </h1>
             </div>
           </div>
@@ -256,9 +287,20 @@ export default function ForumScreen({ onBack }: ForumScreenProps) {
                           </p>
                         </div>
                       </div>
-                      <span className="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/20 rounded-full text-brand-primary text-[10px] font-black uppercase tracking-widest">
-                        {selectedPost.category}
-                      </span>
+                      <div className="flex items-center gap-3">
+                        {currentUserId === selectedPost.authorId && (
+                          <button 
+                            onClick={(e) => handleDeletePost(selectedPost.id, e)}
+                            className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all mr-2"
+                            title="Excluir postagem"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        )}
+                        <span className="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/20 rounded-full text-brand-primary text-[10px] font-black uppercase tracking-widest">
+                          {selectedPost.category}
+                        </span>
+                      </div>
                     </div>
 
                     <h2 className="text-4xl font-black tracking-tighter leading-tight uppercase">
@@ -320,12 +362,23 @@ export default function ForumScreen({ onBack }: ForumScreenProps) {
                               </div>
                             )}
                           </div>
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-3">
-                              <span className="text-[11px] font-black uppercase text-white tracking-widest">{comment.author?.name}</span>
-                              <span className="text-[10px] text-gray-500 font-mono">
-                                {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: ptBR })}
-                              </span>
+                          <div className="space-y-2 flex-1">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-3">
+                                <span className="text-[11px] font-black uppercase text-white tracking-widest">{comment.author?.name}</span>
+                                <span className="text-[10px] text-gray-500 font-mono">
+                                  {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true, locale: ptBR })}
+                                </span>
+                              </div>
+                              {currentUserId === comment.authorId && (
+                                <button 
+                                  onClick={() => handleDeleteComment(comment.id)}
+                                  className="p-1 px-2 text-red-500/50 hover:text-red-500 transition-colors"
+                                  title="Excluir comentário"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              )}
                             </div>
                             <p className="text-sm text-gray-400 leading-relaxed">{comment.content}</p>
                           </div>
@@ -355,13 +408,24 @@ export default function ForumScreen({ onBack }: ForumScreenProps) {
                       {/* Left: Metadata and Category */}
                       <div className="flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-4 sm:w-32 flex-shrink-0">
                         <div className="flex flex-col gap-1">
-                          <Tag className="w-4 h-4 text-brand-primary mb-1" />
+                          <div className="flex items-center justify-between w-full">
+                            <Tag className="w-4 h-4 text-brand-primary mb-1" />
+                            {currentUserId === post.authorId && (
+                              <button 
+                                onClick={(e) => handleDeletePost(post.id, e)}
+                                className="p-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all sm:hidden group-hover:block"
+                                title="Excluir postagem"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </button>
+                            )}
+                          </div>
                           <span className="text-[8px] font-black uppercase tracking-[0.3em] text-brand-primary leading-none">{post.category}</span>
                         </div>
                         
                         <div className="hidden sm:flex flex-col gap-1 pt-4 border-t border-white/5 w-full">
                           <span className="text-[8px] font-mono text-gray-600 uppercase tracking-widest mb-1">DATA_LOG</span>
-                          <div className="flex items-center gap-2 text-gray-400 text-[10px] font-mono">
+                          <div className="flex items-center gap-2 text-gray-400 text-[10px] font-mono text-xs">
                             {formatDistanceToNow(new Date(post.createdAt), { addSuffix: false, locale: ptBR })}
                           </div>
                         </div>

@@ -153,7 +153,12 @@ export default function App() {
   }
 
   if (activeTab === 'forum') {
-    return <ForumScreen onBack={() => setActiveTab('directory')} />;
+    return (
+      <ForumScreen 
+        onBack={() => setActiveTab('directory')} 
+        currentUserId={currentOwnerId}
+      />
+    );
   }
 
   return (
