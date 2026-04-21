@@ -41,6 +41,7 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
   const [isCreating, setIsCreating] = useState(false);
   const [newPost, setNewPost] = useState<PostFormData>({ title: '', content: '', category: 'Geral', externalLink: '' });
   const [newComment, setNewComment] = useState('');
+  const [newCommentLink, setNewCommentLink] = useState('');
   const [filter, setFilter] = useState('Todas');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -79,9 +80,10 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
     e.preventDefault();
     if (!selectedPost || !newComment.trim()) return;
     try {
-      const added = await forumService.addComment(selectedPost.id, newComment);
+      const added = await forumService.addComment(selectedPost.id, newComment, newCommentLink);
       setComments([...comments, added]);
       setNewComment('');
+      setNewCommentLink('');
       // Update comment count locally
       setPosts(posts.map(p => p.id === selectedPost.id ? { ...p, commentsCount: (p.commentsCount || 0) + 1 } : p));
     } catch (error) {
@@ -350,19 +352,32 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                     </h3>
 
                     {/* New Comment Box */}
-                    <form onSubmit={handleAddComment} className="relative">
-                      <textarea 
-                        placeholder="Adicione um comentário..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 pr-20 min-h-[100px] outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-gray-300"
-                      />
-                      <button 
-                        type="submit"
-                        className="absolute bottom-6 right-6 p-3 bg-brand-primary text-white rounded-xl shadow-lg hover:scale-105 transition-all"
-                      >
-                        <Send className="w-5 h-5" />
-                      </button>
+                    <form onSubmit={handleAddComment} className="space-y-4">
+                      <div className="relative">
+                        <textarea 
+                          placeholder="Adicione um comentário..."
+                          value={newComment}
+                          onChange={(e) => setNewComment(e.target.value)}
+                          className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 pr-20 min-h-[100px] outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-gray-300"
+                        />
+                        <button 
+                          type="submit"
+                          className="absolute bottom-6 right-6 p-3 bg-brand-primary text-white rounded-xl shadow-lg hover:scale-105 transition-all"
+                        >
+                          <Send className="w-5 h-5" />
+                        </button>
+                      </div>
+                      
+                      <div className="flex items-center gap-3 bg-white/[0.02] border border-white/5 rounded-xl px-4 py-2">
+                        <Globe className="w-3.5 h-3.5 text-gray-500" />
+                        <input 
+                          type="url"
+                          placeholder="Link complementar (ex: curso, doc...)"
+                          value={newCommentLink}
+                          onChange={(e) => setNewCommentLink(e.target.value)}
+                          className="bg-transparent border-none outline-none text-[10px] font-medium text-gray-400 w-full placeholder:text-gray-700"
+                        />
+                      </div>
                     </form>
 
                     {/* Comments List */}
@@ -397,6 +412,20 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                               )}
                             </div>
                             <p className="text-sm text-gray-400 leading-relaxed">{comment.content}</p>
+                            
+                            {comment.externalLink && (
+                              <div className="pt-2">
+                                <a 
+                                  href={comment.externalLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-2 px-3 py-1.5 bg-brand-primary/10 border border-brand-primary/20 rounded-lg text-brand-primary font-black uppercase text-[8px] tracking-widest hover:bg-brand-primary hover:text-white transition-all shadow-[0_0_15px_rgba(139,92,246,0.1)]"
+                                >
+                                  <ExternalLink className="w-2.5 h-2.5" />
+                                  Ver Referência
+                                </a>
+                              </div>
+                            )}
                           </div>
                         </div>
                       ))}

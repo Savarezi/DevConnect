@@ -119,6 +119,7 @@ export const forumService = {
       postId: comment.post_id,
       authorId: comment.author_id,
       content: comment.content,
+      externalLink: comment.external_link,
       createdAt: comment.created_at,
       author: {
         name: comment.author?.name || 'Dev Anônimo',
@@ -127,7 +128,7 @@ export const forumService = {
     }));
   },
 
-  addComment: async (postId: string, content: string): Promise<ForumComment> => {
+  addComment: async (postId: string, content: string, externalLink?: string): Promise<ForumComment> => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error('Não autenticado');
 
@@ -136,7 +137,8 @@ export const forumService = {
       .insert([{
         post_id: postId,
         author_id: user.id,
-        content
+        content,
+        external_link: externalLink
       }])
       .select(`
         *,
@@ -154,6 +156,7 @@ export const forumService = {
       postId: inserted.post_id,
       authorId: inserted.author_id,
       content: inserted.content,
+      externalLink: inserted.external_link,
       createdAt: inserted.created_at,
       author: {
         name: inserted.author?.name || 'Dev Anônimo',

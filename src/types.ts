@@ -45,6 +45,7 @@ export interface ForumComment {
   postId: string;
   authorId: string;
   content: string;
+  externalLink?: string;
   createdAt: string;
   author?: {
     name: string;
