@@ -28,6 +28,7 @@ export interface ForumPost {
   title: string;
   content: string;
   category: string;
+  externalLink?: string;
   authorId: string;
   createdAt: string;
   author?: {
@@ -55,4 +56,5 @@ export interface PostFormData {
   title: string;
   content: string;
   category: string;
+  externalLink?: string;
 }

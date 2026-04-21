@@ -20,7 +20,8 @@ import {
   Sparkles,
   Zap,
   Globe,
-  Trash2
+  Trash2,
+  ExternalLink
 } from 'lucide-react';
 import { ForumPost, ForumComment, PostFormData } from '../types';
 import { forumService } from '../services/forumService';
@@ -38,7 +39,7 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
   const [comments, setComments] = useState<ForumComment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
-  const [newPost, setNewPost] = useState<PostFormData>({ title: '', content: '', category: 'Geral' });
+  const [newPost, setNewPost] = useState<PostFormData>({ title: '', content: '', category: 'Geral', externalLink: '' });
   const [newComment, setNewComment] = useState('');
   const [filter, setFilter] = useState('Todas');
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,7 +61,7 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
     e.preventDefault();
     try {
       await forumService.createPost(newPost);
-      setNewPost({ title: '', content: '', category: 'Geral' });
+      setNewPost({ title: '', content: '', category: 'Geral', externalLink: '' });
       setIsCreating(false);
       fetchPosts();
     } catch (error) {
@@ -311,6 +312,21 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                       {selectedPost.content}
                     </div>
 
+                    {selectedPost.externalLink && (
+                      <div className="pt-4">
+                        <a 
+                          href={selectedPost.externalLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-3 px-6 py-3 bg-brand-primary/20 border border-brand-primary/40 rounded-xl text-brand-primary font-black uppercase text-[10px] tracking-widest hover:bg-brand-primary hover:text-white transition-all shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+                        >
+                          <Globe className="w-4 h-4" />
+                          Acessar Link Externo
+                          <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    )}
+
                     <div className="pt-6 border-t border-white/5 flex items-center gap-6">
                       <button 
                         onClick={() => handleToggleLike(selectedPost.id)}
@@ -551,6 +567,23 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                       onChange={(e) => setNewPost({...newPost, content: e.target.value})}
                       className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 min-h-[150px] outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-gray-300"
                     />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Link Complementar (Opcional)</label>
+                    <div className="relative">
+                      <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                      <input 
+                        type="url" 
+                        placeholder="https://exemplo.com/curso-ou-artigo"
+                        value={newPost.externalLink}
+                        onChange={(e) => setNewPost({...newPost, externalLink: e.target.value})}
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-sm"
+                      />
+                    </div>
+                    {newPost.category === 'Dica de Curso' && (
+                      <p className="text-[9px] text-brand-primary/60 font-medium italic ml-1">Recomendado para esta categoria! ✨</p>
+                    )}
                   </div>
 
                   <div className="flex gap-4 pt-4">

@@ -44,6 +44,7 @@ export const forumService = {
       title: post.title,
       content: post.content,
       category: post.category,
+      externalLink: post.external_link,
       authorId: post.author_id,
       createdAt: post.created_at,
       author: {
@@ -66,6 +67,7 @@ export const forumService = {
         title: data.title,
         content: data.content,
         category: data.category,
+        external_link: data.externalLink,
         author_id: user.id
       }])
       .select(`
@@ -84,6 +86,7 @@ export const forumService = {
       title: inserted.title,
       content: inserted.content,
       category: inserted.category,
+      externalLink: inserted.external_link,
       authorId: inserted.author_id,
       createdAt: inserted.created_at,
       author: {
