@@ -152,27 +152,27 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
       <div className="absolute top-0 left-[-10%] w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 right-[-10%] w-[400px] h-[400px] bg-indigo-600/5 rounded-full blur-[120px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto space-y-12 relative z-10">
+      <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12 relative z-10">
         
-        {/* Sub Header */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 pt-8">
-          <div className="flex items-center gap-6">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 sm:gap-8 pt-4 sm:pt-8">
+          <div className="flex items-center gap-4 sm:gap-6">
             <motion.button 
               whileHover={{ scale: 1.1, x: -4 }}
               whileTap={{ scale: 0.9 }}
               onClick={selectedPost ? () => setSelectedPost(null) : onBack}
-              className="p-4 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-brand-primary/10 hover:border-brand-primary/50 transition-all text-gray-400 hover:text-brand-primary shadow-xl backdrop-blur-md"
+              className="p-3 sm:p-4 rounded-2xl bg-white/[0.03] border border-white/10 hover:bg-brand-primary/10 hover:border-brand-primary/50 transition-all text-gray-400 hover:text-brand-primary shadow-xl backdrop-blur-md"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </motion.button>
             <div>
               <div className="flex items-center gap-3 mb-1">
-                <Sparkles className="w-4 h-4 text-brand-primary animate-pulse" />
-                <span className="text-[10px] font-mono text-brand-primary font-black uppercase tracking-[0.4em]">
+                <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-brand-primary animate-pulse" />
+                <span className="text-[8px] sm:text-[10px] font-mono text-brand-primary font-black uppercase tracking-[0.2em] sm:tracking-[0.4em]">
                   {selectedPost ? 'protocol_detailed_view' : 'nexus_community_feed'}
                 </span>
               </div>
-              <h1 className="text-5xl font-black tracking-tighter uppercase leading-none">
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tighter uppercase leading-none">
                 {selectedPost ? 'Discussão' : (
                   <>Hub de <span className="text-brand-primary">Conhecimento.</span></>
                 )}
@@ -181,25 +181,25 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
           </div>
 
           {!selectedPost && (
-            <div className="flex items-center gap-4">
-              <div className="relative group hidden sm:block">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+              <div className="relative group">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-brand-primary transition-colors" />
                 <input 
                   type="text" 
-                  placeholder="Pesquisar inteligência..."
+                  placeholder="Pesquisar..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 pr-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 outline-none w-72 text-sm font-medium backdrop-blur-xl transition-all"
+                  className="pl-12 pr-6 py-3.5 sm:py-4 bg-white/[0.03] border border-white/10 rounded-2xl focus:ring-2 focus:ring-brand-primary/50 outline-none w-full sm:w-64 md:w-72 text-sm font-medium backdrop-blur-xl transition-all"
                 />
               </div>
               <motion.button 
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsCreating(true)}
-                className="flex items-center gap-3 px-8 py-4 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-[0_10px_30px_rgba(139,92,246,0.3)] hover:shadow-brand-primary/40 transition-all"
+                className="flex items-center justify-center gap-3 px-8 py-3.5 sm:py-4 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-[0_10px_30px_rgba(139,92,246,0.3)] hover:shadow-brand-primary/40 transition-all w-full sm:w-auto"
               >
                 <Plus className="w-4 h-4" />
-                Nova Postagem
+                Novo Post
               </motion.button>
             </div>
           )}
@@ -209,18 +209,18 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
           
           {/* Categories Sidebar */}
           {!selectedPost && (
-            <aside className="space-y-10 hidden lg:block">
+            <aside className="lg:block lg:space-y-10">
               <div className="space-y-4">
-                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] px-4 flex items-center gap-2">
+                <p className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] px-4 hidden lg:flex items-center gap-2">
                   <Globe className="w-3 h-3" />
-                  Navegação
+                  Categorias
                 </p>
-                <div className="space-y-1">
+                <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
                   {categories.map(cat => (
                     <button
                       key={cat}
                       onClick={() => setFilter(cat)}
-                      className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl transition-all font-bold text-[10px] uppercase tracking-[0.2em] group relative overflow-hidden ${
+                      className={`flex items-center lg:justify-between px-5 py-3 lg:py-4 rounded-2xl transition-all font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] group relative overflow-hidden whitespace-nowrap lg:whitespace-normal ${
                         filter === cat 
                           ? 'text-white border border-brand-primary/30' 
                           : 'text-gray-500 hover:text-white border border-transparent'
@@ -234,13 +234,13 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                         <div className={`w-1.5 h-1.5 rounded-full transition-all ${filter === cat ? 'bg-brand-primary scale-125' : 'bg-gray-800'}`} />
                         {cat}
                       </span>
-                      <ChevronRight className={`w-4 h-4 transition-transform ${filter === cat ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'}`} />
+                      <ChevronRight className={`hidden lg:block w-4 h-4 transition-transform ${filter === cat ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'}`} />
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="p-6 rounded-3xl bg-indigo-500/5 border border-indigo-500/10 space-y-4">
+              <div className="hidden lg:block p-6 rounded-3xl bg-indigo-500/5 border border-indigo-500/10 space-y-4">
                 <Zap className="w-6 h-6 text-indigo-400" />
                 <p className="text-[10px] font-black uppercase tracking-widest leading-loose text-indigo-300">
                   Compartilhe conhecimento e aumente seu <span className="text-white">Expert Score</span> na rede.
@@ -271,56 +271,56 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                   className="space-y-8"
                 >
                   {/* The Post Itself */}
-                  <div className="bg-surface-card/40 border border-white/5 rounded-3xl p-8 backdrop-blur-3xl space-y-6">
+                  <div className="bg-surface-card/40 border border-white/5 rounded-3xl p-6 sm:p-8 backdrop-blur-3xl space-y-6">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-brand-primary/20 border border-brand-primary/30 overflow-hidden">
+                      <div className="flex items-center gap-3 sm:gap-4">
+                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-brand-primary/20 border border-brand-primary/30 overflow-hidden shrink-0">
                           {selectedPost.author?.avatarUrl ? (
                             <img src={selectedPost.author.avatarUrl} alt="" className="w-full h-full object-cover" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-brand-primary">
-                              <User className="w-6 h-6" />
+                              <User className="w-5 h-5 sm:w-6 sm:h-6" />
                             </div>
                           )}
                         </div>
                         <div>
-                          <p className="font-black text-white uppercase tracking-tight">{selectedPost.author?.name}</p>
-                          <p className="text-[10px] text-gray-500 font-mono">
+                          <p className="text-sm sm:text-base font-black text-white uppercase tracking-tight truncate max-w-[120px] sm:max-w-none">{selectedPost.author?.name}</p>
+                          <p className="text-[9px] sm:text-[10px] text-gray-500 font-mono">
                             Postado {formatDistanceToNow(new Date(selectedPost.createdAt), { addSuffix: true, locale: ptBR })}
                           </p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-2 sm:gap-3">
                         {currentUserId === selectedPost.authorId && (
                           <button 
                             onClick={(e) => handleDeletePost(selectedPost.id, e)}
-                            className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all mr-2"
+                            className="p-2 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500 hover:text-white transition-all"
                             title="Excluir postagem"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                           </button>
                         )}
-                        <span className="px-4 py-1.5 bg-brand-primary/10 border border-brand-primary/20 rounded-full text-brand-primary text-[10px] font-black uppercase tracking-widest">
+                        <span className="px-2.5 sm:px-4 py-1 sm:py-1.5 bg-brand-primary/10 border border-brand-primary/20 rounded-full text-brand-primary text-[8px] sm:text-[10px] font-black uppercase tracking-widest">
                           {selectedPost.category}
                         </span>
                       </div>
                     </div>
 
-                    <h2 className="text-4xl font-black tracking-tighter leading-tight uppercase">
+                    <h2 className="text-2xl sm:text-4xl font-black tracking-tighter leading-tight uppercase">
                       {selectedPost.title}
                     </h2>
 
-                    <div className="text-gray-400 leading-relaxed text-lg whitespace-pre-wrap">
+                    <div className="text-gray-400 leading-relaxed text-base sm:text-lg whitespace-pre-wrap">
                       {selectedPost.content}
                     </div>
 
                     {selectedPost.externalLink && (
-                      <div className="pt-4">
+                      <div className="pt-2 sm:pt-4">
                         <a 
                           href={selectedPost.externalLink}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-3 px-6 py-3 bg-brand-primary/20 border border-brand-primary/40 rounded-xl text-brand-primary font-black uppercase text-[10px] tracking-widest hover:bg-brand-primary hover:text-white transition-all shadow-[0_0_20px_rgba(139,92,246,0.2)]"
+                          className="flex sm:inline-flex items-center justify-center gap-3 px-6 py-3.5 sm:py-3 bg-brand-primary/20 border border-brand-primary/40 rounded-xl text-brand-primary font-black uppercase text-[9px] sm:text-[10px] tracking-widest hover:bg-brand-primary hover:text-white transition-all shadow-[0_0_20px_rgba(139,92,246,0.2)] w-full sm:w-auto"
                         >
                           <Globe className="w-4 h-4" />
                           Acessar Link Externo
@@ -329,17 +329,17 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                       </div>
                     )}
 
-                    <div className="pt-6 border-t border-white/5 flex items-center gap-6">
+                    <div className="pt-6 border-t border-white/5 flex items-center gap-6 sm:gap-8">
                       <button 
                         onClick={() => handleToggleLike(selectedPost.id)}
                         className={`flex items-center gap-2 transition-all ${selectedPost.hasLiked ? 'text-brand-primary' : 'text-gray-500 hover:text-white'}`}
                       >
-                        <ThumbsUp className={`w-5 h-5 ${selectedPost.hasLiked ? 'fill-current' : ''}`} />
-                        <span className="font-bold text-sm tracking-widest uppercase">{selectedPost.likesCount} Votos</span>
+                        <ThumbsUp className={`w-4 h-4 sm:w-5 sm:h-5 ${selectedPost.hasLiked ? 'fill-current' : ''}`} />
+                        <span className="font-bold text-xs sm:text-sm tracking-widest uppercase">{selectedPost.likesCount} Votos</span>
                       </button>
                       <div className="flex items-center gap-2 text-gray-500">
-                        <MessageSquare className="w-5 h-5" />
-                        <span className="font-bold text-sm tracking-widest uppercase">{selectedPost.commentsCount} Comentários</span>
+                        <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />
+                        <span className="font-bold text-xs sm:text-sm tracking-widest uppercase">{selectedPost.commentsCount} Comentários</span>
                       </div>
                     </div>
                   </div>
@@ -438,7 +438,7 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                   key="list"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="grid grid-cols-1 gap-6"
+                  className="grid grid-cols-1 gap-4 sm:gap-6"
                 >
                   {filteredPosts.map((post, idx) => (
                     <motion.div
@@ -448,29 +448,29 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                       transition={{ delay: idx * 0.05 }}
                       key={post.id}
                       onClick={() => handleSelectPost(post)}
-                      className="group bg-white/[0.02] border border-white/10 rounded-3xl p-8 hover:bg-white/[0.04] hover:border-brand-primary/40 transition-all cursor-pointer backdrop-blur-2xl relative overflow-hidden flex flex-col sm:flex-row gap-8"
+                      className="group bg-white/[0.02] border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:bg-white/[0.04] hover:border-brand-primary/40 transition-all cursor-pointer backdrop-blur-2xl relative overflow-hidden flex flex-col sm:flex-row gap-6 sm:gap-8"
                     >
                       {/* Left: Metadata and Category */}
-                      <div className="flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-4 sm:w-32 flex-shrink-0">
+                      <div className="flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-4 sm:w-28 flex-shrink-0">
                         <div className="flex flex-col gap-1">
                           <div className="flex items-center justify-between w-full">
-                            <Tag className="w-4 h-4 text-brand-primary mb-1" />
+                            <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-primary mb-1" />
                             {currentUserId === post.authorId && (
                               <button 
                                 onClick={(e) => handleDeletePost(post.id, e)}
                                 className="p-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all sm:hidden group-hover:block"
                                 title="Excluir postagem"
                               >
-                                <Trash2 className="w-3.5 h-3.5" />
+                                <Trash2 className="w-3 h-3" />
                               </button>
                             )}
                           </div>
-                          <span className="text-[8px] font-black uppercase tracking-[0.3em] text-brand-primary leading-none">{post.category}</span>
+                          <span className="text-[7.5px] sm:text-[8px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-brand-primary leading-none">{post.category}</span>
                         </div>
                         
                         <div className="hidden sm:flex flex-col gap-1 pt-4 border-t border-white/5 w-full">
-                          <span className="text-[8px] font-mono text-gray-600 uppercase tracking-widest mb-1">DATA_LOG</span>
-                          <div className="flex items-center gap-2 text-gray-400 text-[10px] font-mono text-xs">
+                          <span className="text-[7.5px] sm:text-[8px] font-mono text-gray-600 uppercase tracking-widest mb-1">DATA_LOG</span>
+                          <div className="flex items-center gap-2 text-gray-400 text-[9px] sm:text-[10px] font-mono">
                             {formatDistanceToNow(new Date(post.createdAt), { addSuffix: false, locale: ptBR })}
                           </div>
                         </div>
@@ -478,37 +478,37 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
 
                       {/* Center: Content */}
                       <div className="flex-1 space-y-4">
-                        <h3 className="text-2xl font-black tracking-tighter uppercase group-hover:text-brand-primary transition-colors leading-tight">
+                        <h3 className="text-xl sm:text-2xl font-black tracking-tighter uppercase group-hover:text-brand-primary transition-colors leading-tight line-clamp-2">
                           {post.title}
                         </h3>
 
-                        <p className="text-gray-500 line-clamp-2 leading-relaxed text-sm font-medium italic">
+                        <p className="text-gray-500 line-clamp-2 leading-relaxed text-xs sm:text-sm font-medium italic">
                           "{post.content}"
                         </p>
 
-                        <div className="flex items-center justify-between pt-6 border-t border-white/5">
-                          <div className="flex items-center gap-4">
-                            <div className="w-8 h-8 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
+                        <div className="flex items-center justify-between pt-4 sm:pt-6 border-t border-white/5">
+                          <div className="flex items-center gap-3 sm:gap-4">
+                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
                               {post.author?.avatarUrl ? (
                                 <img src={post.author.avatarUrl} alt="" className="w-full h-full object-cover" />
                               ) : (
-                                <User className="w-4 h-4 text-gray-500" />
+                                <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
                               )}
                             </div>
                             <div className="flex flex-col">
-                              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-[0.2em]">{post.author?.name}</span>
-                              <span className="text-[7px] text-brand-primary font-mono uppercase">VERIFIED_CONTRIBUTOR</span>
+                              <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] sm:tracking-[0.2em]">{post.author?.name}</span>
+                              <span className="text-[6.5px] sm:text-[7px] text-brand-primary font-mono uppercase">VERIFIED_CONTRIBUTOR</span>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-6">
-                            <motion.div whileHover={{ scale: 1.1 }} className="flex items-center gap-2 group/stat">
-                              <ThumbsUp className={`w-4 h-4 transition-all ${post.hasLiked ? 'text-brand-primary fill-current' : 'text-gray-600 group-hover/stat:text-brand-primary'}`} />
-                              <span className={`text-[10px] font-black ${post.hasLiked ? 'text-brand-primary' : 'text-gray-600'}`}>{post.likesCount}</span>
+                          <div className="flex items-center gap-4 sm:gap-6">
+                            <motion.div whileHover={{ scale: 1.1 }} className="flex items-center gap-1.5 sm:gap-2 group/stat">
+                              <ThumbsUp className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all ${post.hasLiked ? 'text-brand-primary fill-current' : 'text-gray-600 group-hover/stat:text-brand-primary'}`} />
+                              <span className={`text-[9px] sm:text-[10px] font-black ${post.hasLiked ? 'text-brand-primary' : 'text-gray-600'}`}>{post.likesCount}</span>
                             </motion.div>
-                            <div className="flex items-center gap-2 group/stat">
-                              <MessageSquare className="w-4 h-4 text-gray-600 group-hover/stat:text-indigo-400 transition-colors" />
-                              <span className="text-[10px] font-black text-gray-600 group-hover/stat:text-indigo-400">{post.commentsCount}</span>
+                            <div className="flex items-center gap-1.5 sm:gap-2 group/stat">
+                              <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600 group-hover/stat:text-indigo-400 transition-colors" />
+                              <span className="text-[9px] sm:text-[10px] font-black text-gray-600 group-hover/stat:text-indigo-400">{post.commentsCount}</span>
                             </div>
                           </div>
                         </div>
@@ -549,36 +549,44 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative w-full max-w-2xl bg-surface-card border border-white/10 rounded-[2.5rem] p-10 shadow-2xl overflow-hidden"
+              className="relative w-full max-w-2xl bg-surface-card border border-white/10 rounded-3xl sm:rounded-[2.5rem] p-6 sm:p-10 shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto custom-scrollbar"
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-brand-primary/5 blur-3xl -z-10" />
               
-              <div className="space-y-8">
-                <div>
-                  <h2 className="text-3xl font-black uppercase tracking-tighter">Iniciar Discussão</h2>
-                  <p className="text-[10px] font-mono text-brand-primary font-bold uppercase tracking-[0.3em] mt-2">broadcast_to_community</p>
+              <div className="space-y-6 sm:space-y-8">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl sm:text-3xl font-black uppercase tracking-tighter">Iniciar Discussão</h2>
+                    <p className="text-[8px] sm:text-[10px] font-mono text-brand-primary font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em] mt-1 sm:mt-2">broadcast_to_community</p>
+                  </div>
+                  <button 
+                    onClick={() => setIsCreating(false)}
+                    className="p-2 rounded-full hover:bg-white/5 text-gray-500 transition-all sm:hidden"
+                  >
+                    <Plus className="w-6 h-6 rotate-45" />
+                  </button>
                 </div>
 
-                <form onSubmit={handleCreatePost} className="space-y-6">
+                <form onSubmit={handleCreatePost} className="space-y-4 sm:space-y-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Título do Post</label>
+                    <label className="text-[9px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Título do Post</label>
                     <input 
                       required
                       type="text" 
                       placeholder="Sobre o que você quer falar?"
                       value={newPost.title}
                       onChange={(e) => setNewPost({...newPost, title: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 sm:px-6 py-3.5 sm:py-4 outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-sm sm:text-base"
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Categoria</label>
+                      <label className="text-[9px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Categoria</label>
                       <select 
                         value={newPost.category}
                         onChange={(e) => setNewPost({...newPost, category: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-bold text-[10px] uppercase tracking-widest appearance-none"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 sm:px-6 py-3.5 sm:py-4 outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-bold text-[10px] uppercase tracking-widest appearance-none"
                       >
                         {categories.filter(c => c !== 'Todas').map(cat => (
                           <option key={cat} value={cat} className="bg-[#020203] text-white uppercase">{cat}</option>
@@ -588,44 +596,41 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Conteúdo</label>
+                    <label className="text-[9px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Conteúdo</label>
                     <textarea 
                       required
-                      placeholder="Dê os detalhes da sua dica, dúvida ou código..."
+                      placeholder="Dê os detalhes..."
                       value={newPost.content}
                       onChange={(e) => setNewPost({...newPost, content: e.target.value})}
-                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 min-h-[150px] outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-gray-300"
+                      className="w-full bg-white/5 border border-white/10 rounded-2xl px-4 sm:px-6 py-3.5 sm:py-4 min-h-[120px] sm:min-h-[150px] outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-gray-300 text-sm"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Link Complementar (Opcional)</label>
+                    <label className="text-[9px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-widest ml-1">Link Complementar</label>
                     <div className="relative">
-                      <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+                      <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
                       <input 
                         type="url" 
-                        placeholder="https://exemplo.com/curso-ou-artigo"
+                        placeholder="https://..."
                         value={newPost.externalLink}
                         onChange={(e) => setNewPost({...newPost, externalLink: e.target.value})}
-                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-12 pr-6 py-4 outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-sm"
+                        className="w-full bg-white/5 border border-white/10 rounded-2xl pl-10 sm:pl-12 pr-6 py-3.5 sm:py-4 outline-none focus:ring-2 focus:ring-brand-primary/50 transition-all font-medium text-xs sm:text-sm"
                       />
                     </div>
-                    {newPost.category === 'Dica de Curso' && (
-                      <p className="text-[9px] text-brand-primary/60 font-medium italic ml-1">Recomendado para esta categoria! ✨</p>
-                    )}
                   </div>
 
-                  <div className="flex gap-4 pt-4">
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
                     <button 
                       type="button"
                       onClick={() => setIsCreating(false)}
-                      className="flex-1 py-4 rounded-2xl border border-white/10 hover:bg-white/5 font-black uppercase tracking-widest text-[10px] transition-all"
+                      className="order-2 sm:order-1 flex-1 py-4 rounded-2xl border border-white/10 hover:bg-white/5 font-black uppercase tracking-widest text-[9px] sm:text-[10px] transition-all"
                     >
                       Cancelar
                     </button>
                     <button 
                       type="submit"
-                      className="flex-1 py-4 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-lg shadow-brand-primary/20 hover:scale-[1.02] transition-all"
+                      className="order-1 sm:order-2 flex-1 py-4 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-widest text-[9px] sm:text-[10px] shadow-lg shadow-brand-primary/20 hover:scale-[1.02] transition-all"
                     >
                       Publicar agora
                     </button>

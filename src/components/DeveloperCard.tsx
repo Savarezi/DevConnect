@@ -68,7 +68,7 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
       onMouseLeave={() => setIsHovered(false)}
       whileHover={{ y: -4, zIndex: 50 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
-      className="bg-[#0a0a0c]/80 border border-white/5 rounded-[2.5rem] p-8 shadow-2xl hover:shadow-brand-primary/20 hover:border-brand-primary/40 transition-all group relative overflow-hidden flex flex-col items-center text-center z-10"
+      className="bg-[#0a0a0c]/80 border border-white/5 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-8 shadow-2xl hover:shadow-brand-primary/20 hover:border-brand-primary/40 transition-all group relative overflow-hidden flex flex-col items-center text-center z-10"
     >
       {/* Stardust Background Effect */}
       <div className="absolute inset-0 opacity-10 pointer-events-none bg-[radial-gradient(circle_at_center,rgba(139,92,246,0.05)_0%,transparent_100%),url('https://www.transparenttextures.com/patterns/stardust.png')]" />
@@ -84,7 +84,7 @@ const DeveloperCard: React.FC<DeveloperCardProps> = ({ developer, onEdit, onTagC
         </button>
       )}
 
-      <div className="flex flex-col items-center w-full space-y-6 relative z-10">
+      <div className="flex flex-col items-center w-full space-y-4 sm:space-y-6 relative z-10">
         <div className="relative">
           <Avatar src={developer.avatarUrl} name={developer.name} size="md" />
           <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-[#0a0a0c] border-2 border-emerald-500/50 rounded-full flex items-center justify-center z-20">

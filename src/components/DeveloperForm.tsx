@@ -97,29 +97,29 @@ export default function DeveloperForm({ isOpen, onClose, onSubmit, initialDevelo
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="fixed inset-0 m-auto w-full max-w-lg h-fit max-h-[90vh] overflow-y-auto bg-surface-card border border-white/10 rounded-[2.5rem] p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] z-50 scroller"
+            className="fixed inset-0 m-auto w-full max-w-lg h-fit max-h-[95vh] sm:max-h-[90vh] overflow-y-auto bg-surface-card border border-white/10 rounded-[2rem] sm:rounded-[2.5rem] p-6 sm:p-10 shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] z-50 scroller"
           >
-            <div className="flex items-center justify-between mb-10">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary">
-                  {isEditMode ? <Edit3 className="w-6 h-6" /> : <UserPlus className="w-6 h-6" />}
+            <div className="flex items-center justify-between mb-6 sm:mb-10">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+                  {isEditMode ? <Edit3 className="w-5 h-5 sm:w-6 sm:h-6" /> : <UserPlus className="w-5 h-5 sm:w-6 sm:h-6" />}
                 </div>
                 <div>
-                  <h2 className="text-2xl font-black text-white uppercase tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
                     {isEditMode ? 'Editar Perfil' : 'Novo Talento'}
                   </h2>
-                  <p className="text-gray-500 text-xs font-bold uppercase tracking-widest mt-1 opacity-60">Diretório Profissional</p>
+                  <p className="text-gray-500 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest mt-0.5 sm:mt-1 opacity-60">Diretório Profissional</p>
                 </div>
               </div>
               <button 
                 onClick={onClose}
-                className="p-2.5 rounded-xl hover:bg-white/5 text-gray-500 hover:text-white transition-all hover:rotate-90"
+                className="p-2 rounded-xl hover:bg-white/5 text-gray-500 hover:text-white transition-all hover:rotate-90"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em] flex items-center gap-2">
                   <Globe className="w-3 h-3" /> Identificação Completa
@@ -199,7 +199,7 @@ export default function DeveloperForm({ isOpen, onClose, onSubmit, initialDevelo
                 />
               </div>
 
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 <div className="space-y-3">
                   <label className="text-[10px] font-black text-brand-primary uppercase tracking-[0.2em] flex items-center gap-2">
                     <Linkedin className="w-3 h-3" /> Network URL
@@ -208,7 +208,7 @@ export default function DeveloperForm({ isOpen, onClose, onSubmit, initialDevelo
                     required
                     type="url"
                     placeholder="linkedin.com/in/perfil"
-                    className="w-full bg-surface-base border border-white/[0.08] rounded-2xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary/50 focus:bg-surface-accent transition-all font-mono text-sm"
+                    className="w-full bg-surface-base border border-white/[0.08] rounded-2xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary/50 focus:bg-surface-accent transition-all font-mono text-xs sm:text-sm"
                     value={formData.linkedinUrl}
                     onChange={(e) => setFormData({ ...formData, linkedinUrl: e.target.value })}
                   />
@@ -222,7 +222,7 @@ export default function DeveloperForm({ isOpen, onClose, onSubmit, initialDevelo
                     required
                     type="url"
                     placeholder="github.com/perfil"
-                    className="w-full bg-surface-base border border-white/[0.08] rounded-2xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary/50 focus:bg-surface-accent transition-all font-mono text-sm"
+                    className="w-full bg-surface-base border border-white/[0.08] rounded-2xl px-5 py-4 text-white placeholder:text-gray-700 focus:outline-none focus:border-brand-primary/50 focus:bg-surface-accent transition-all font-mono text-xs sm:text-sm"
                     value={formData.githubUrl}
                     onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
                   />

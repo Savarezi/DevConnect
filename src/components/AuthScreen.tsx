@@ -123,7 +123,7 @@ export default function AuthScreen() {
       <motion.div 
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 bg-surface-card/40 backdrop-blur-3xl border border-white/5 rounded-[3rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,1)] relative z-10"
+        className="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 bg-surface-card/40 backdrop-blur-3xl border border-white/5 rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,1)] relative z-10"
       >
         {/* Left Side: Visual Experience */}
         <div className="hidden lg:flex relative group overflow-hidden bg-black/40 items-center justify-center p-12">
@@ -263,17 +263,17 @@ export default function AuthScreen() {
         </div>
 
         {/* Right Side: Auth Form */}
-        <div className="p-12 lg:p-20 flex flex-col justify-center relative text-left">
-          <div className="mb-12">
+        <div className="p-8 sm:p-12 lg:p-20 flex flex-col justify-center relative text-left">
+          <div className="mb-8 sm:mb-12">
             <motion.div 
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
-              className="w-16 h-16 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-8 border border-white/5 shadow-[0_0_20px_rgba(139,92,246,0.3)]"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary mb-6 sm:mb-8 border border-white/5 shadow-[0_0_20px_rgba(139,92,246,0.3)]"
             >
-              <Terminal className="w-8 h-8" />
+              <Terminal className="w-6 h-6 sm:w-8 sm:h-8" />
             </motion.div>
-            <h1 className="text-4xl font-black text-white uppercase tracking-tighter mb-4 flex flex-col">
+            <h1 className="text-3xl sm:text-4xl font-black text-white uppercase tracking-tighter mb-4 flex flex-col">
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -303,7 +303,7 @@ export default function AuthScreen() {
                 ))}
               </motion.span>
             </h1>
-            <p className="text-gray-500 font-medium leading-relaxed">
+            <p className="text-sm sm:text-base text-gray-500 font-medium leading-relaxed">
               Acesse o hub exclusivo para desenvolvedores de elite. Construa sua rede, troque experiências e escale sua carreira através de conexões reais no ecossistema tech.
             </p>
           </div>
@@ -313,7 +313,7 @@ export default function AuthScreen() {
               whileHover={{ scale: 1.02, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleGoogleLogin}
-              className="w-full flex items-center justify-center gap-4 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-brand-primary/50 text-white py-5 rounded-2xl font-black uppercase tracking-widest transition-all group relative overflow-hidden"
+              className="w-full flex items-center justify-center gap-3 sm:gap-4 bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-brand-primary/50 text-white py-4 sm:py-5 rounded-2xl font-black uppercase tracking-widest transition-all group relative overflow-hidden text-xs sm:text-sm"
             >
               <div className="absolute inset-0 bg-brand-primary opacity-0 group-hover:opacity-10 transition-opacity" />
               {/* Glossy sweep effect */}

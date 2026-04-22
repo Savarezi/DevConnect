@@ -193,12 +193,12 @@ export default function App() {
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[120px] -z-10" />
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/10 rounded-full blur-[120px] -z-10" />
         
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex justify-between items-center mb-8">
-            <nav className="flex items-center gap-3 p-2 bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 sm:gap-0">
+            <nav className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 p-1.5 sm:p-2 bg-white/[0.03] border border-white/10 rounded-2xl backdrop-blur-xl shadow-2xl w-full sm:w-auto">
               <button 
                 onClick={() => setActiveTab('directory')}
-                className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all relative group ${
+                className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-all relative group ${
                   activeTab === 'directory' 
                     ? 'bg-white/10 text-white border border-white/20' 
                     : 'text-gray-500 hover:text-white'
@@ -210,7 +210,7 @@ export default function App() {
               
               <button 
                 onClick={() => setActiveTab('forum')}
-                className={`flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all relative overflow-hidden group ${
+                className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-all relative overflow-hidden group ${
                   activeTab === 'forum' 
                     ? 'bg-brand-primary text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] border border-brand-primary/50' 
                     : 'bg-indigo-500/5 text-indigo-400/50 hover:text-indigo-400 border border-indigo-500/10 hover:border-indigo-500/30'
@@ -233,7 +233,7 @@ export default function App() {
 
               <button 
                 onClick={() => setIsRankingOpen(true)}
-                className="flex items-center gap-3 px-6 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all bg-amber-500/10 text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 relative group"
+                className="flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-all bg-amber-500/10 text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 relative group"
               >
                 <Trophy className="w-4 h-4" />
                 Ranking
@@ -247,21 +247,21 @@ export default function App() {
               Sign Out
             </button>
           </div>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
             <div className="space-y-4">
               <motion.div 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 w-fit"
               >
-                <Terminal className="w-4 h-4 text-brand-primary" />
-                <span className="text-[10px] font-bold text-brand-primary uppercase tracking-widest">Enterprise Dev Directory</span>
+                <Terminal className="w-3 h-3 sm:w-4 sm:h-4 text-brand-primary" />
+                <span className="text-[9px] sm:text-[10px] font-bold text-brand-primary uppercase tracking-widest">Enterprise Dev Directory</span>
               </motion.div>
               
               <motion.h1 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="text-7xl md:text-8xl font-[900] uppercase tracking-tighter leading-none"
+                className="text-5xl sm:text-7xl md:text-8xl font-[900] uppercase tracking-tighter leading-[0.9]"
               >
                 DEV<span className="text-brand-primary text-glow italic">CONNECT.</span>
               </motion.h1>
@@ -270,10 +270,10 @@ export default function App() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-lg text-gray-400 max-w-xl font-medium leading-relaxed"
+                className="text-base sm:text-lg text-gray-400 max-w-xl font-medium leading-relaxed"
               >
                 O hub definitivo de talentos técnicos. Conecte-se com desenvolvedores de alta performance, 
-                compartilhe seu perfil profissional e impulsione sua carreira criando conexões que geram oportunidades reais. ⚡
+                compartilhe seu perfil profissional e impulsione sua carreira. ⚡
               </motion.p>
             </div>
 
@@ -281,31 +281,31 @@ export default function App() {
               whileHover={{ scale: 1.05, y: -4 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleOpenCreate}
-              className="flex items-center gap-4 px-10 py-6 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-widest transition-all neon-glow shadow-brand-primary/60 group relative overflow-hidden"
+              className="flex items-center justify-center gap-4 px-6 sm:px-10 py-4 sm:py-6 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-widest transition-all neon-glow shadow-brand-primary/60 group relative overflow-hidden text-xs sm:text-base w-full sm:w-auto"
             >
-              <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-              Ingressar na Plataforma
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-90 transition-transform" />
+              Ingressar no Hub
             </motion.button>
           </div>
 
           {/* Stats Bar */}
-          <div className="flex flex-col md:flex-row items-center p-8 border border-white/10 bg-surface-card/40 backdrop-blur-2xl rounded-3xl relative overflow-hidden gap-8">
+          <div className="flex flex-col md:flex-row items-center p-6 sm:p-8 border border-white/10 bg-surface-card/40 backdrop-blur-2xl rounded-3xl relative overflow-hidden gap-6 sm:gap-8">
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-brand-primary/5 to-transparent pointer-events-none" />
             
             {/* User Count */}
-            <div className="flex items-center gap-6 relative z-10 shrink-0">
-              <div className="w-14 h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary shadow-[0_0_20px_rgba(139,92,246,0.3)]">
-                <Users className="w-7 h-7" />
+            <div className="flex items-center gap-4 sm:gap-6 relative z-10 shrink-0 w-full sm:w-auto">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary shadow-[0_0_20px_rgba(139,92,246,0.3)]">
+                <Users className="w-6 h-6 sm:w-7 sm:h-7" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mb-1">Membros Ativos no Hub</span>
-                <div className="flex items-baseline gap-3">
-                  <span className="text-4xl font-mono font-black text-white">
+                <span className="text-[8px] sm:text-[10px] font-black text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-1">Membros no Hub</span>
+                <div className="flex items-baseline gap-2 sm:gap-3">
+                  <span className="text-3xl sm:text-4xl font-mono font-black text-white">
                     <AnimatedCounter value={developers.length} />
                   </span>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" />
-                    <span className="text-[10px] font-mono text-emerald-500 font-bold tracking-tighter uppercase">Protocolo: LIVE</span>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" />
+                    <span className="text-[8px] sm:text-[10px] font-mono text-emerald-500 font-bold tracking-tighter uppercase">LIVE</span>
                   </div>
                 </div>
               </div>
@@ -412,62 +412,56 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.9, y: 30 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              className="w-full max-w-2xl bg-[#030303]/90 border border-white/10 rounded-[3rem] p-12 relative shadow-[0_0_100px_rgba(245,158,11,0.15)] overflow-hidden backdrop-blur-3xl"
+              className="w-full max-w-2xl bg-[#030303]/90 border border-white/10 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-12 relative shadow-[0_0_100px_rgba(245,158,11,0.15)] overflow-hidden backdrop-blur-3xl"
             >
               {/* Scanline Effect */}
               <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none opacity-20" />
               
               <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 blur-[130px] pointer-events-none -z-10" />
               
-              <div className="flex items-center justify-between mb-16 relative z-10">
-                <div className="flex items-center gap-6">
+              <div className="flex items-center justify-between mb-8 sm:mb-16 relative z-10">
+                <div className="flex items-center gap-4 sm:gap-6">
                   <div className="relative group">
-                    <div className="w-20 h-20 rounded-3xl bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/30 group-hover:border-amber-500/60 transition-all">
-                      <Trophy className="w-12 h-12" />
+                    <div className="w-12 h-12 sm:w-20 sm:h-20 rounded-2xl sm:rounded-3xl bg-amber-500/10 flex items-center justify-center text-amber-500 border border-amber-500/30 group-hover:border-amber-500/60 transition-all">
+                      <Trophy className="w-6 h-6 sm:w-12 sm:h-12" />
                     </div>
-                    <div className="absolute inset-0 bg-amber-500/20 blur-2xl animate-pulse rounded-3xl -z-10" />
-                    
-                    {/* Technical Decors */}
-                    <div className="absolute -top-2 -left-2 w-4 h-4 border-t-2 border-l-2 border-amber-500/50" />
-                    <div className="absolute -bottom-2 -right-2 w-4 h-4 border-b-2 border-r-2 border-amber-500/50" />
+                    <div className="absolute inset-0 bg-amber-500/20 blur-2xl animate-pulse rounded-2xl sm:rounded-3xl -z-10" />
                   </div>
                   <div>
-                    <h3 className="text-4xl font-[950] uppercase tracking-tighter italic text-white flex items-center gap-4">
+                    <h3 className="text-2xl sm:text-4xl font-[950] uppercase tracking-tighter italic text-white flex items-center gap-3 sm:gap-4">
                       Ranking Elite
-                      <div className="px-2 py-0.5 rounded bg-amber-500 text-[10px] font-black text-amber-950 not-italic tracking-widest uppercase">Global</div>
                     </h3>
-                    <div className="flex items-center gap-3 mt-1">
-                      <span className="text-[10px] font-mono text-amber-500/60 font-bold uppercase tracking-[0.4em]">Protocolo: Contribuição_Nivel_Máximo</span>
-                      <div className="h-px w-20 bg-gradient-to-r from-amber-500/40 to-transparent" />
+                    <div className="flex items-center gap-2 sm:gap-3 mt-1">
+                      <span className="text-[8px] sm:text-[10px] font-mono text-amber-500/60 font-bold uppercase tracking-[0.2em] sm:tracking-[0.4em]">RANK_G_01</span>
                     </div>
                   </div>
                 </div>
                 <button 
                   onClick={() => setIsRankingOpen(false)}
-                  className="p-4 rounded-full bg-white/5 hover:bg-white/10 text-gray-500 hover:text-white transition-all border border-white/5"
+                  className="p-2 sm:p-4 rounded-full bg-white/5 hover:bg-white/10 text-gray-500 hover:text-white transition-all border border-white/5"
                 >
-                  <Plus className="w-8 h-8 rotate-45" />
+                  <Plus className="w-6 h-6 sm:w-8 sm:h-8 rotate-45" />
                 </button>
               </div>
 
-              <div className="space-y-4 max-h-[55vh] overflow-y-auto pr-4 custom-scrollbar relative z-10">
+              <div className="space-y-4 max-h-[60vh] sm:max-h-[55vh] overflow-y-auto pr-2 sm:pr-4 custom-scrollbar relative z-10">
                 {eliteDevelopers.map((dev, idx) => (
                   <motion.div 
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
                     key={dev.id} 
-                    className="flex items-center gap-8 p-1 bg-white/[0.02] border border-white/5 rounded-[2.5rem] hover:border-amber-500/30 transition-all group cursor-pointer relative"
+                    className="flex items-center gap-4 sm:gap-8 p-1 bg-white/[0.02] border border-white/5 rounded-2xl sm:rounded-[2.5rem] hover:border-amber-500/30 transition-all group cursor-pointer relative"
                     onClick={() => {
                       setSearchTerm(dev.name);
                       setIsRankingOpen(false);
-                      window.scrollTo({ top: 800, behavior: 'smooth' });
+                      window.scrollTo({ top: 400, behavior: 'smooth' });
                     }}
                   >
-                    <div className="flex items-center w-full gap-6 p-6">
-                      {/* Position Number - Large Typography */}
-                      <div className="w-16 flex flex-col items-center shrink-0">
-                        <span className={`text-4xl font-mono font-[900] ${
+                    <div className="flex items-center w-full gap-3 sm:gap-6 p-3 sm:p-6">
+                      {/* Position Number */}
+                      <div className="w-8 sm:w-16 flex flex-col items-center shrink-0">
+                        <span className={`text-xl sm:text-4xl font-mono font-[900] ${
                           idx === 0 ? 'text-amber-500' : 
                           idx === 1 ? 'text-slate-400' : 
                           idx === 2 ? 'text-orange-600' :
@@ -475,60 +469,42 @@ export default function App() {
                         }`}>
                           {(idx + 1).toString().padStart(2, '0')}
                         </span>
-                        <div className={`w-6 h-1 mt-1 rounded-full ${
-                          idx === 0 ? 'bg-amber-500 shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 
-                          idx === 1 ? 'bg-slate-400' : 
-                          idx === 2 ? 'bg-orange-600' :
-                          'bg-white/5'
-                        }`} />
                       </div>
 
                       <div className="relative shrink-0">
-                        <div className={`w-20 h-20 rounded-[2rem] p-1 ${
+                        <div className={`w-12 h-12 sm:w-20 sm:h-20 rounded-xl sm:rounded-[2rem] p-0.5 ${
                           idx === 0 ? 'bg-gradient-to-br from-amber-500/50 to-transparent' : 
                           'bg-white/5'
                         }`}>
-                          <div className="w-full h-full rounded-[1.8rem] overflow-hidden border border-white/10 relative transition-transform group-hover:scale-105">
+                          <div className="w-full h-full rounded-[0.9rem] sm:rounded-[1.8rem] overflow-hidden border border-white/10 relative transition-transform group-hover:scale-105">
                             {dev.avatarUrl ? (
                               <img src={dev.avatarUrl} alt="" className="w-full h-full object-cover" />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center text-gray-700 bg-gray-900">
-                                 <Users className="w-10 h-10" />
+                                 <Users className="w-5 h-5 sm:w-10 sm:h-10" />
                               </div>
-                            )}
-                            {/* Holographic overlay on first place */}
-                            {idx === 0 && (
-                              <div className="absolute inset-0 bg-gradient-to-tr from-amber-500/20 via-transparent to-white/10 mix-blend-overlay" />
                             )}
                           </div>
                         </div>
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 sm:mb-4 gap-1">
                           <div>
-                            <p className="text-2xl font-black uppercase text-white group-hover:text-amber-500 transition-colors tracking-tighter italic truncate">
+                            <p className="text-base sm:text-2xl font-black uppercase text-white group-hover:text-amber-500 transition-colors tracking-tighter italic truncate">
                               {dev.name}
                             </p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                              <span className="text-[9px] font-mono font-bold text-gray-500 uppercase tracking-widest">Sincronizado_No_Hub</span>
-                            </div>
                           </div>
                           
-                          <div className="text-right">
-                            <div className="flex items-center justify-end gap-3 mb-1">
-                              <Zap className={`w-5 h-5 ${idx === 0 ? 'text-amber-500' : 'text-gray-500'}`} />
-                              <span className="text-2xl font-mono font-black text-white tracking-widest leading-none">
-                                <AnimatedCounter value={dev.contributions || 0} />
-                              </span>
-                            </div>
-                            <span className="text-[10px] font-mono font-bold text-amber-500 uppercase tracking-widest">Experiência_Hub</span>
+                          <div className="flex items-center sm:justify-end gap-2 sm:gap-3">
+                            <Zap className={`w-3.5 h-3.5 sm:w-5 sm:h-5 ${idx === 0 ? 'text-amber-500' : 'text-gray-500'}`} />
+                            <span className="text-base sm:text-2xl font-mono font-black text-white tracking-widest leading-none">
+                              <AnimatedCounter value={dev.contributions || 0} />
+                            </span>
                           </div>
                         </div>
                         
-                        {/* More modern progress bar */}
-                        <div className="relative h-3 w-full bg-white/5 rounded-full overflow-hidden p-[2px] border border-white/5">
+                        <div className="relative h-2 sm:h-3 w-full bg-white/5 rounded-full overflow-hidden p-[1px] sm:p-[2px] border border-white/5">
                           <motion.div 
                             initial={{ width: 0 }}
                             animate={{ width: `${Math.min((dev.contributions || 0) * 10, 100)}%` }}
@@ -539,15 +515,12 @@ export default function App() {
                               idx === 2 ? 'from-orange-700 via-orange-500 to-orange-300' :
                               'from-gray-700 via-gray-500 to-gray-300'
                             }`}
-                          >
-                            <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_0%,rgba(255,255,255,0.4)_50%,transparent_100%)] w-20 animate-gloss" />
-                          </motion.div>
+                          />
                         </div>
                       </div>
                     </div>
                   </motion.div>
                 ))}
-
                 {eliteDevelopers.length === 0 && (
                   <div className="py-24 text-center space-y-6">
                     <Activity className="w-16 h-16 text-gray-800 mx-auto animate-pulse" />
