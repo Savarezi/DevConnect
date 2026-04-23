@@ -270,7 +270,7 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                         className={`flex items-center lg:justify-between px-5 py-3 lg:py-4 rounded-2xl transition-all font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] group relative overflow-hidden whitespace-nowrap lg:whitespace-normal ${
                           filter === cat 
                             ? `text-white border ${styles.border.replace('/20', '/40')}` 
-                            : 'text-gray-500 hover:text-white border border-transparent'
+                            : 'text-gray-500 border border-transparent'
                         }`}
                       >
                         {filter === cat && (
@@ -282,8 +282,10 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                         )}
                         
                         <span className="relative z-10 flex items-center gap-3">
-                          <div className={`w-1.5 h-1.5 rounded-full transition-all ${filter === cat ? `${styles.dot} scale-125 shadow-[0_0_8px_rgba(255,255,255,0.5)]` : 'bg-gray-800'}`} />
-                          {cat}
+                          <div className={`w-1.2 h-1.2 sm:w-1.5 sm:h-1.5 rounded-full transition-all ${styles.dot} ${filter === cat ? 'scale-125 shadow-[0_0_8px_rgba(255,255,255,0.5)]' : 'opacity-30 group-hover:opacity-100 group-hover:scale-110'}`} />
+                          <span className={`transition-colors ${filter === cat ? 'text-white' : `text-gray-500 ${styles.text.replace('text-', 'group-hover:text-')}`}`}>
+                            {cat}
+                          </span>
                         </span>
                         <ChevronRight className={`hidden lg:block w-4 h-4 transition-transform ${filter === cat ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'}`} />
                       </button>
