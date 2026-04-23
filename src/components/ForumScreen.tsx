@@ -47,6 +47,51 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
 
   const categories = ['Todas', 'Dica de Curso', 'Dúvida', 'Código', 'Geral'];
 
+  const getCategoryStyles = (category: string) => {
+    switch (category) {
+      case 'Dica de Curso':
+        return {
+          text: 'text-emerald-400',
+          bg: 'bg-emerald-500/10',
+          border: 'border-emerald-500/20',
+          hoverBorder: 'group-hover:border-emerald-500/40',
+          hoverBg: 'hover:bg-emerald-500/10',
+          glow: 'shadow-emerald-500/20',
+          dot: 'bg-emerald-500'
+        };
+      case 'Dúvida':
+        return {
+          text: 'text-amber-400',
+          bg: 'bg-amber-500/10',
+          border: 'border-amber-500/20',
+          hoverBorder: 'group-hover:border-amber-500/40',
+          hoverBg: 'hover:bg-amber-500/10',
+          glow: 'shadow-amber-500/20',
+          dot: 'bg-amber-500'
+        };
+      case 'Código':
+        return {
+          text: 'text-cyan-400',
+          bg: 'bg-cyan-500/10',
+          border: 'border-cyan-500/20',
+          hoverBorder: 'group-hover:border-cyan-500/40',
+          hoverBg: 'hover:bg-cyan-500/10',
+          glow: 'shadow-cyan-500/20',
+          dot: 'bg-cyan-500'
+        };
+      default:
+        return {
+          text: 'text-brand-primary',
+          bg: 'bg-brand-primary/10',
+          border: 'border-brand-primary/20',
+          hoverBorder: 'group-hover:border-brand-primary/40',
+          hoverBg: 'hover:bg-brand-primary/10',
+          glow: 'shadow-brand-primary/20',
+          dot: 'bg-brand-primary'
+        };
+    }
+  };
+
   useEffect(() => {
     fetchPosts();
   }, []);
@@ -216,27 +261,34 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                   Categorias
                 </p>
                 <div className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
-                  {categories.map(cat => (
-                    <button
-                      key={cat}
-                      onClick={() => setFilter(cat)}
-                      className={`flex items-center lg:justify-between px-5 py-3 lg:py-4 rounded-2xl transition-all font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] group relative overflow-hidden whitespace-nowrap lg:whitespace-normal ${
-                        filter === cat 
-                          ? 'text-white border border-brand-primary/30' 
-                          : 'text-gray-500 hover:text-white border border-transparent'
-                      }`}
-                    >
-                      {filter === cat && (
-                        <motion.div layoutId="nav-bg" className="absolute inset-0 bg-brand-primary/10 -z-10" />
-                      )}
-                      
-                      <span className="relative z-10 flex items-center gap-3">
-                        <div className={`w-1.5 h-1.5 rounded-full transition-all ${filter === cat ? 'bg-brand-primary scale-125' : 'bg-gray-800'}`} />
-                        {cat}
-                      </span>
-                      <ChevronRight className={`hidden lg:block w-4 h-4 transition-transform ${filter === cat ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'}`} />
-                    </button>
-                  ))}
+                  {categories.map(cat => {
+                    const styles = getCategoryStyles(cat);
+                    return (
+                      <button
+                        key={cat}
+                        onClick={() => setFilter(cat)}
+                        className={`flex items-center lg:justify-between px-5 py-3 lg:py-4 rounded-2xl transition-all font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] group relative overflow-hidden whitespace-nowrap lg:whitespace-normal ${
+                          filter === cat 
+                            ? `text-white border ${styles.border.replace('/20', '/40')}` 
+                            : 'text-gray-500 hover:text-white border border-transparent'
+                        }`}
+                      >
+                        {filter === cat && (
+                          <motion.div 
+                            layoutId="nav-bg" 
+                            className={`absolute inset-0 ${styles.bg} -z-10 blur-sm`} 
+                            initial={false}
+                          />
+                        )}
+                        
+                        <span className="relative z-10 flex items-center gap-3">
+                          <div className={`w-1.5 h-1.5 rounded-full transition-all ${filter === cat ? `${styles.dot} scale-125 shadow-[0_0_8px_rgba(255,255,255,0.5)]` : 'bg-gray-800'}`} />
+                          {cat}
+                        </span>
+                        <ChevronRight className={`hidden lg:block w-4 h-4 transition-transform ${filter === cat ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0'}`} />
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
@@ -271,14 +323,14 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                   className="space-y-8"
                 >
                   {/* The Post Itself */}
-                  <div className="bg-surface-card/40 border border-white/5 rounded-3xl p-6 sm:p-8 backdrop-blur-3xl space-y-6">
+                  <div className={`bg-surface-card/40 border border-white/5 rounded-3xl p-6 sm:p-8 backdrop-blur-3xl space-y-6 transition-all ${getCategoryStyles(selectedPost.category).glow}`}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 sm:gap-4">
-                        <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-brand-primary/20 border border-brand-primary/30 overflow-hidden shrink-0">
+                        <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full ${getCategoryStyles(selectedPost.category).bg} border ${getCategoryStyles(selectedPost.category).border} overflow-hidden shrink-0`}>
                           {selectedPost.author?.avatarUrl ? (
                             <img src={selectedPost.author.avatarUrl} alt="" className="w-full h-full object-cover" />
                           ) : (
-                            <div className="w-full h-full flex items-center justify-center text-brand-primary">
+                            <div className={`w-full h-full flex items-center justify-center ${getCategoryStyles(selectedPost.category).text}`}>
                               <User className="w-5 h-5 sm:w-6 sm:h-6" />
                             </div>
                           )}
@@ -300,13 +352,13 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                             <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                           </button>
                         )}
-                        <span className="px-2.5 sm:px-4 py-1 sm:py-1.5 bg-brand-primary/10 border border-brand-primary/20 rounded-full text-brand-primary text-[8px] sm:text-[10px] font-black uppercase tracking-widest">
+                        <span className={`px-2.5 sm:px-4 py-1 sm:py-1.5 ${getCategoryStyles(selectedPost.category).bg} border ${getCategoryStyles(selectedPost.category).border} rounded-full ${getCategoryStyles(selectedPost.category).text} text-[8px] sm:text-[10px] font-black uppercase tracking-widest`}>
                           {selectedPost.category}
                         </span>
                       </div>
                     </div>
 
-                    <h2 className="text-2xl sm:text-4xl font-black tracking-tighter leading-tight uppercase">
+                    <h2 className={`text-2xl sm:text-4xl font-black tracking-tighter leading-tight uppercase transition-colors ${getCategoryStyles(selectedPost.category).text}`}>
                       {selectedPost.title}
                     </h2>
 
@@ -332,7 +384,7 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                     <div className="pt-6 border-t border-white/5 flex items-center gap-6 sm:gap-8">
                       <button 
                         onClick={() => handleToggleLike(selectedPost.id)}
-                        className={`flex items-center gap-2 transition-all ${selectedPost.hasLiked ? 'text-brand-primary' : 'text-gray-500 hover:text-white'}`}
+                        className={`flex items-center gap-2 transition-all ${selectedPost.hasLiked ? getCategoryStyles(selectedPost.category).text : 'text-gray-500 hover:text-white'}`}
                       >
                         <ThumbsUp className={`w-4 h-4 sm:w-5 sm:h-5 ${selectedPost.hasLiked ? 'fill-current' : ''}`} />
                         <span className="font-bold text-xs sm:text-sm tracking-widest uppercase">{selectedPost.likesCount} Votos</span>
@@ -448,24 +500,24 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                       transition={{ delay: idx * 0.05 }}
                       key={post.id}
                       onClick={() => handleSelectPost(post)}
-                      className="group bg-white/[0.02] border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:bg-white/[0.04] hover:border-brand-primary/40 transition-all cursor-pointer backdrop-blur-2xl relative overflow-hidden flex flex-col sm:flex-row gap-6 sm:gap-8"
+                      className={`group bg-white/[0.02] border border-white/10 rounded-2xl sm:rounded-3xl p-6 sm:p-8 hover:bg-white/[0.04] transition-all cursor-pointer backdrop-blur-2xl relative overflow-hidden flex flex-col sm:flex-row gap-6 sm:gap-8 ${getCategoryStyles(post.category).hoverBorder} hover:shadow-[0_0_30px_rgba(0,0,0,0.3)]`}
                     >
                       {/* Left: Metadata and Category */}
                       <div className="flex sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-4 sm:w-28 flex-shrink-0">
                         <div className="flex flex-col gap-1">
                           <div className="flex items-center justify-between w-full">
-                            <Tag className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-brand-primary mb-1" />
+                            <Tag className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${getCategoryStyles(post.category).text} mb-1`} />
                             {currentUserId === post.authorId && (
                               <button 
                                 onClick={(e) => handleDeletePost(post.id, e)}
-                                className="p-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all sm:hidden group-hover:block"
+                                className="p-1.5 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white transition-all sm:hidden group-hover:block relative z-20"
                                 title="Excluir postagem"
                               >
                                 <Trash2 className="w-3 h-3" />
                               </button>
                             )}
                           </div>
-                          <span className="text-[7.5px] sm:text-[8px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-brand-primary leading-none">{post.category}</span>
+                          <span className={`text-[7.5px] sm:text-[8px] font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] ${getCategoryStyles(post.category).text} leading-none`}>{post.category}</span>
                         </div>
                         
                         <div className="hidden sm:flex flex-col gap-1 pt-4 border-t border-white/5 w-full">
@@ -478,7 +530,7 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
 
                       {/* Center: Content */}
                       <div className="flex-1 space-y-4">
-                        <h3 className="text-xl sm:text-2xl font-black tracking-tighter uppercase group-hover:text-brand-primary transition-colors leading-tight line-clamp-2">
+                        <h3 className={`text-xl sm:text-2xl font-black tracking-tighter uppercase transition-colors leading-tight line-clamp-2 ${getCategoryStyles(post.category).text.replace('text-', 'group-hover:text-')}`}>
                           {post.title}
                         </h3>
 
@@ -488,35 +540,35 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
 
                         <div className="flex items-center justify-between pt-4 sm:pt-6 border-t border-white/5">
                           <div className="flex items-center gap-3 sm:gap-4">
-                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-white/5 flex items-center justify-center overflow-hidden border border-white/10">
+                            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-xl ${getCategoryStyles(post.category).bg} flex items-center justify-center overflow-hidden border ${getCategoryStyles(post.category).border}`}>
                               {post.author?.avatarUrl ? (
                                 <img src={post.author.avatarUrl} alt="" className="w-full h-full object-cover" />
                               ) : (
-                                <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-500" />
+                                <User className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${getCategoryStyles(post.category).text}`} />
                               )}
                             </div>
                             <div className="flex flex-col">
                               <span className="text-[8px] sm:text-[9px] font-bold text-gray-400 uppercase tracking-[0.15em] sm:tracking-[0.2em]">{post.author?.name}</span>
-                              <span className="text-[6.5px] sm:text-[7px] text-brand-primary font-mono uppercase">VERIFIED_CONTRIBUTOR</span>
+                              <span className={`text-[6.5px] sm:text-[7px] ${getCategoryStyles(post.category).text} font-mono uppercase`}>VERIFIED_CONTRIBUTOR</span>
                             </div>
                           </div>
 
                           <div className="flex items-center gap-4 sm:gap-6">
                             <motion.div whileHover={{ scale: 1.1 }} className="flex items-center gap-1.5 sm:gap-2 group/stat">
-                              <ThumbsUp className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all ${post.hasLiked ? 'text-brand-primary fill-current' : 'text-gray-600 group-hover/stat:text-brand-primary'}`} />
-                              <span className={`text-[9px] sm:text-[10px] font-black ${post.hasLiked ? 'text-brand-primary' : 'text-gray-600'}`}>{post.likesCount}</span>
+                              <ThumbsUp className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all ${post.hasLiked ? getCategoryStyles(post.category).text + ' fill-current' : 'text-gray-600 group-hover/stat:' + getCategoryStyles(post.category).text}`} />
+                              <span className={`text-[9px] sm:text-[10px] font-black ${post.hasLiked ? getCategoryStyles(post.category).text : 'text-gray-600'}`}>{post.likesCount}</span>
                             </motion.div>
                             <div className="flex items-center gap-1.5 sm:gap-2 group/stat">
-                              <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600 group-hover/stat:text-indigo-400 transition-colors" />
-                              <span className="text-[9px] sm:text-[10px] font-black text-gray-600 group-hover/stat:text-indigo-400">{post.commentsCount}</span>
+                              <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-600 group-hover/stat:text-white transition-colors" />
+                              <span className="text-[9px] sm:text-[10px] font-black text-gray-600 group-hover/stat:text-white">{post.commentsCount}</span>
                             </div>
                           </div>
                         </div>
                       </div>
 
                       {/* Right: Hover Arrow */}
-                      <div className="hidden lg:flex items-center justify-center translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500">
-                        <div className="w-12 h-12 rounded-full bg-brand-primary/20 flex items-center justify-center text-brand-primary">
+                      <div className={`hidden lg:flex items-center justify-center translate-x-12 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 transition-all duration-500`}>
+                        <div className={`w-12 h-12 rounded-full ${getCategoryStyles(post.category).bg} flex items-center justify-center ${getCategoryStyles(post.category).text}`}>
                           <ChevronRight className="w-6 h-6" />
                         </div>
                       </div>
