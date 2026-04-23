@@ -44,6 +44,19 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
   const [newCommentLink, setNewCommentLink] = useState('');
   const [filter, setFilter] = useState('Todas');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    const hasSeenWelcome = sessionStorage.getItem('dev_connect_forum_welcome');
+    if (!hasSeenWelcome) {
+      setShowWelcome(true);
+    }
+  }, []);
+
+  const handleCloseWelcome = () => {
+    sessionStorage.setItem('dev_connect_forum_welcome', 'true');
+    setShowWelcome(false);
+  };
 
   const categories = ['Todas', 'Dica de Curso', 'Dúvida', 'Código', 'Geral'];
 
@@ -690,6 +703,95 @@ export default function ForumScreen({ onBack, currentUserId }: ForumScreenProps)
                     </button>
                   </div>
                 </form>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Welcome Onboarding Modal */}
+      <AnimatePresence>
+        {showWelcome && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-6 overflow-hidden">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }}
+              onClick={handleCloseWelcome}
+              className="absolute inset-0 bg-black/90 backdrop-blur-2xl"
+            />
+            
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 30 }}
+              className="w-full max-w-2xl bg-surface-card border border-white/10 rounded-[2.5rem] sm:rounded-[3.5rem] p-8 sm:p-14 relative shadow-[0_40px_100px_rgba(0,0,0,0.8)] overflow-hidden scroller max-h-[90vh] overflow-y-auto"
+            >
+              {/* Animated Background Gradients */}
+              <div className="absolute top-0 right-0 w-80 h-80 bg-brand-primary/10 blur-[100px] -z-10 animate-pulse" />
+              <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-600/10 blur-[100px] -z-10 animate-pulse" />
+
+              <div className="space-y-10 sm:space-y-12 relative z-10">
+                <div className="text-center space-y-4">
+                  <div className="flex items-center justify-center gap-3 mb-6">
+                    <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl bg-brand-primary/10 flex items-center justify-center text-brand-primary shadow-[0_0_20px_rgba(139,92,246,0.2)]">
+                      <Sparkles className="w-6 h-6 sm:w-8 sm:h-8" />
+                    </div>
+                  </div>
+                  <h2 className="text-3xl sm:text-5xl font-black tracking-tighter uppercase italic leading-none">
+                    Nexus <span className="text-brand-primary">Protocol.</span>
+                  </h2>
+                  <p className="text-gray-400 text-xs sm:text-base font-medium max-w-md mx-auto leading-relaxed">
+                    Bem-vindo ao centro de inteligência da DevConnect. Aqui, conhecimento é a sua maior moeda e a colaboração é o nosso core.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  {[
+                    { cat: 'Dica de Curso', icon: Globe, color: 'text-emerald-400', bg: 'bg-emerald-500/10', desc: 'Trilhas, livros e assets que mudaram o seu jogo profissional.' },
+                    { cat: 'Código', icon: MessageSquare, color: 'text-cyan-400', bg: 'bg-cyan-500/10', desc: 'Compartilhe snippets, lógica pura e desafios arquiteturais.' },
+                    { cat: 'Dúvida', icon: Cpu, color: 'text-amber-400', bg: 'bg-amber-500/10', desc: 'Zero julgamentos. Poste sua barreira técnica e evolua com a rede.' },
+                    { cat: 'Geral', icon: Zap, color: 'text-brand-primary', bg: 'bg-brand-primary/10', desc: 'Carreira, notícias e networking livre fora do radar técnico.' }
+                  ].map((item) => (
+                    <div key={item.cat} className="p-5 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all group">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className={`w-8 h-8 rounded-xl ${item.bg} flex items-center justify-center ${item.color}`}>
+                          <item.icon className="w-4 h-4" />
+                        </div>
+                        <span className={`text-[10px] font-black uppercase tracking-widest ${item.color}`}>{item.cat}</span>
+                      </div>
+                      <p className="text-[10px] sm:text-[11px] text-gray-500 leading-relaxed font-medium group-hover:text-gray-400 transition-colors">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-6 rounded-3xl bg-brand-primary/5 border border-brand-primary/10 flex flex-col sm:flex-row items-center gap-6">
+                  <div className="w-12 h-12 rounded-2xl bg-brand-primary/20 flex items-center justify-center shrink-0">
+                    <Zap className="w-6 h-6 text-brand-primary fill-current" />
+                  </div>
+                  <div>
+                    <h4 className="text-[11px] font-black uppercase text-white tracking-widest mb-1">Sistema de Reconhecimento</h4>
+                    <p className="text-[10px] text-gray-400 leading-relaxed font-medium">Poste conteúdo útil para aumentar seu <span className="text-white">Expert Score</span>. Colete medalhas, suba no Ranking Elite e torne-se uma referência no ecossistema.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-8">
+                  <div className="flex flex-col items-center gap-4 py-2 opacity-60">
+                    <div className="h-[1px] w-12 bg-white/10" />
+                    <p className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.4em] text-center">
+                      REGRAS_DE_CONVIVÊNCIA: Respeito mútuo acima de tudo.
+                    </p>
+                  </div>
+
+                  <motion.button 
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={handleCloseWelcome}
+                    className="w-full py-5 sm:py-6 bg-brand-primary text-white rounded-3xl font-black uppercase tracking-[0.3em] text-[10px] sm:text-xs shadow-[0_20px_50px_rgba(139,92,246,0.3)]"
+                  >
+                    Entender Protocolo
+                  </motion.button>
+                </div>
               </div>
             </motion.div>
           </div>
