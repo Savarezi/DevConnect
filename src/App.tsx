@@ -280,11 +280,23 @@ export default function App() {
             <motion.button
               whileHover={{ scale: 1.05, y: -4 }}
               whileTap={{ scale: 0.95 }}
+              animate={{
+                boxShadow: [
+                  "0 0 20px rgba(139, 92, 246, 0.3)",
+                  "0 0 60px rgba(139, 92, 246, 0.6)",
+                  "0 0 20px rgba(139, 92, 246, 0.3)"
+                ],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
               onClick={handleOpenCreate}
-              className="flex items-center justify-center gap-4 px-6 sm:px-10 py-4 sm:py-6 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-widest transition-all neon-glow shadow-brand-primary/60 group relative overflow-hidden text-xs sm:text-base w-full sm:w-auto"
+              className="flex items-center justify-center gap-4 px-6 sm:px-10 py-4 sm:py-6 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-widest transition-all group relative overflow-hidden text-xs sm:text-base w-full sm:w-auto"
             >
-              <Plus className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-90 transition-transform" />
-              Ingressar no Hub
+              <Plus className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-90 transition-transform text-white/80" />
+              Crie seu DEV_CARD
             </motion.button>
           </div>
 
