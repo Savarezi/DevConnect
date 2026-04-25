@@ -56,6 +56,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isRankingOpen, setIsRankingOpen] = useState(false);
+  const [isAccessBlocked, setIsAccessBlocked] = useState(false);
   const [editingDeveloper, setEditingDeveloper] = useState<Developer | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [areaFilter, setAreaFilter] = useState('Todas');
@@ -117,6 +118,18 @@ export default function App() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
+  };
+
+  const hasProfile = useMemo(() => {
+    return developers.some(dev => dev.ownerId === currentOwnerId);
+  }, [developers, currentOwnerId]);
+
+  const checkProfileAccess = () => {
+    if (!hasProfile) {
+      setIsAccessBlocked(true);
+      return false;
+    }
+    return true;
   };
 
   const handleOpenCreate = () => {
@@ -209,7 +222,11 @@ export default function App() {
               </button>
               
               <button 
-                onClick={() => setActiveTab('forum')}
+                onClick={() => {
+                  if (checkProfileAccess()) {
+                    setActiveTab('forum');
+                  }
+                }}
                 className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-all relative overflow-hidden group ${
                   activeTab === 'forum' 
                     ? 'bg-brand-primary text-white shadow-[0_0_30px_rgba(139,92,246,0.4)] border border-brand-primary/50' 
@@ -232,7 +249,11 @@ export default function App() {
               <div className="h-6 w-px bg-white/10 mx-2" />
 
               <button 
-                onClick={() => setIsRankingOpen(true)}
+                onClick={() => {
+                  if (checkProfileAccess()) {
+                    setIsRankingOpen(true);
+                  }
+                }}
                 className="flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl text-[9px] sm:text-[10px] font-black uppercase tracking-[0.1em] sm:tracking-[0.2em] transition-all bg-amber-500/10 text-amber-500 border border-amber-500/20 hover:bg-amber-500/20 hover:border-amber-500/40 relative group"
               >
                 <Trophy className="w-4 h-4" />
@@ -596,6 +617,58 @@ export default function App() {
         onSubmit={handleSubmitForm}
         initialDeveloper={editingDeveloper}
       />
+      {/* Profile Blocker Modal */}
+      <AnimatePresence>
+        {isAccessBlocked && (
+          <div className="fixed inset-0 z-[300] flex items-center justify-center p-4">
+            <motion.div 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }}
+              onClick={() => setIsAccessBlocked(false)}
+              className="absolute inset-0 bg-black/60 backdrop-blur-md"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: 20 }}
+              className="w-full max-w-md bg-surface-card border border-white/10 rounded-[2rem] p-10 relative shadow-2xl text-center overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-brand-primary to-indigo-600" />
+              
+              <div className="w-20 h-20 bg-brand-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-8 text-brand-primary">
+                <Lock className="w-10 h-10" />
+              </div>
+              
+              <h3 className="text-2xl font-black uppercase tracking-tighter mb-4 italic">
+                Acesso <span className="text-brand-primary">Restrito.</span>
+              </h3>
+              
+              <p className="text-gray-400 text-sm font-medium mb-10 leading-relaxed">
+                Para ter acesso à comunidade e ao ranking, crie seu card primeiro. É rápido, basta clicar no botão abaixo!
+              </p>
+              
+              <div className="space-y-4">
+                <button
+                  onClick={() => {
+                    setIsAccessBlocked(false);
+                    handleOpenCreate();
+                  }}
+                  className="w-full py-5 bg-brand-primary text-white rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg shadow-brand-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                >
+                  Criar meu Card agora
+                </button>
+                <button
+                  onClick={() => setIsAccessBlocked(false)}
+                  className="w-full py-4 text-gray-500 hover:text-white font-bold uppercase tracking-widest text-[10px] transition-colors"
+                >
+                  Talvez mais tarde
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
