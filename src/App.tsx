@@ -19,7 +19,8 @@ import {
   Trophy,
   Activity,
   Zap,
-  Sparkles
+  Sparkles,
+  Lock
 } from 'lucide-react';
 import { Developer, DeveloperFormData } from './types';
 import { developerService } from './services/developerService';
